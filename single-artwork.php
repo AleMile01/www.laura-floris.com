@@ -1,6 +1,6 @@
 <?php get_header(); ?>
 
-<main class="px-6 py-16 md:px-10">
+<main class="px-6 pb-16 pt-10 md:px-10 md:pt-8">
     <section class="mx-auto max-w-5xl">
         <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
             <article <?php post_class(); ?>>
@@ -34,3 +34,4 @@
 </main>
 
 <?php get_footer(); ?>
+

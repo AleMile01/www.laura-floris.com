@@ -5,14 +5,14 @@ Template Name: About
 get_header();
 ?>
 
-<main class="px-6 py-16 md:px-10">
+<main class="px-6 pb-16 pt-10 md:px-10 md:pt-8">
     <section class="mx-auto max-w-7xl">
-        <div class="mb-12 text-center">
+        <div class="mb-8 text-center">
             <p class="mb-3 text-sm text-neutral-500">About</p>
             <h1 class="text-4xl font-black md:text-5xl">About the artist</h1>
         </div>
 
-        <div class="grid items-start gap-10 md:grid-cols-3">
+        <div class="grid items-start gap-8 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] md:gap-10">
             <div class="group overflow-hidden rounded-3xl bg-neutral-100 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
                 <div class="aspect-[4/5] overflow-hidden">
                     <img
@@ -22,7 +22,7 @@ get_header();
                     >
                 </div>
 
-                <div class="p-6 text-center">
+                <div class="p-5 text-center">
                     <h2 class="text-lg font-semibold">Laura Floris</h2>
                     <p class="mt-2 text-sm text-neutral-600">Digital artist & fashion designer</p>
 
@@ -45,21 +45,19 @@ get_header();
                 </div>
             </div>
 
-            <div class="self-start rounded-3xl border border-neutral-200 bg-neutral-50 p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-                <h3 class="mb-4 text-xl font-semibold">Background</h3>
+            <div class="self-start rounded-3xl border border-neutral-200 bg-neutral-50 p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg md:p-8">
+                <h2 class="mb-5 text-2xl font-semibold">Laura Floris</h2>
                 <p class="text-neutral-600 leading-7">
-                    Hi, I'm Laura Floris. I was born in Madrid and grew up in Italy.
-                    I’m bilingual Italian and Spanish native speaker and I work as a freelance digital artist and fashion designer.
+                    Laura Floris de Las Casas, conocida art&iacute;sticamente como La Floris, es una ilustradora que ha creado un universo visual donde el color es el aut&eacute;ntico protagonista. Nacida en Madrid y criada en Imperia (Italia), estudi&oacute; Moda en el IED de Madrid, iniciando un camino creativo que la llev&oacute; a trabajar en producciones televisivas como Zapeando, El Intermedio y el departamento de vestuario de La Catedral del Mar.
                 </p>
-            </div>
-
-            <div class="self-start rounded-3xl border border-neutral-200 bg-neutral-50 p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-                <h3 class="mb-4 text-xl font-semibold">Collaborations</h3>
-                <p class="text-neutral-600 leading-7">
-                    Over the years I have collaborated with brands and creative projects, creating illustrations, fashion graphics and visual concepts.
+                <p class="mt-5 text-neutral-600 leading-7">
+                    Su trayectoria dio un giro con el descubrimiento de la ilustraci&oacute;n digital, donde desarroll&oacute; un estilo vibrante y reconocible, lleno de gui&ntilde;os a la moda, el cine y la cultura pop. Ha trabajado para clientes como El Pa&iacute;s, Eme21 Magazine, la revista cultural ilustrada de Madrid, Elle Italia, Citro&euml;n y Desigual.
                 </p>
                 <p class="mt-4 text-neutral-600 leading-7">
-                    For collaborations or commissions feel free to contact me via email.
+                    Entre sus proyectos m&aacute;s destacados se encuentra la escritura e ilustraci&oacute;n de la biograf&iacute;a de Lady Gaga para la editorial Lunwerg (Grupo Planeta).
+                </p>
+                <p class="mt-4 text-neutral-600 leading-7">
+                    Tras a&ntilde;os centrada en retratos y figuras humanas, desde 2024 las ciudades se han convertido en sus nuevas musas. Madrid fue el punto de partida de un proyecto que en 2025 se expande a distintas ciudades del mundo, reinterpretando paisajes urbanos con una paleta explosiva y transform&aacute;ndolos en escenas llenas de vida, energ&iacute;a y personalidad.
                 </p>
             </div>
         </div>
@@ -149,3 +147,4 @@ get_header();
 </main>
 
 <?php get_footer(); ?>
+

@@ -5,9 +5,9 @@ Template Name: Artworks
 get_header();
 ?>
 
-<main class="px-6 py-16 md:px-10">
+<main class="px-6 pb-16 pt-10 md:px-10 md:pt-8">
     <section class="mx-auto max-w-7xl">
-        <div class="mb-12 text-center">
+        <div class="mb-8 text-center">
             <p class="mb-3 text-sm text-neutral-500">Artworks</p>
             <h1 class="text-4xl font-black md:text-5xl">My Artworks</h1>
         </div>
@@ -122,3 +122,5 @@ get_header();
 </main>
 
 <?php get_footer(); ?>
+
+

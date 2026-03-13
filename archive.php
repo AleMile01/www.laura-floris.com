@@ -1,8 +1,8 @@
 <?php get_header(); ?>
 
-<main class="px-6 py-16 md:px-10">
+<main class="px-6 pb-16 pt-10 md:px-10 md:pt-8">
     <div class="mx-auto max-w-7xl">
-        <header class="mb-10">
+        <header class="mb-8">
             <h1 class="text-3xl font-black uppercase md:text-5xl"><?php the_archive_title(); ?></h1>
             <?php if (get_the_archive_description()) : ?>
                 <div class="mt-4 text-neutral-600">
@@ -44,3 +44,4 @@
 </main>
 
 <?php get_footer(); ?>
+

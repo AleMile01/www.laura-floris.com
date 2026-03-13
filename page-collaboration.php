@@ -10,16 +10,16 @@ if (!$collaboration) {
 }
 ?>
 
-<main class="px-6 py-16 md:px-10">
-    <section class="mx-auto max-w-7xl">
-        <div class="mb-12 text-center">
+<main class="px-6 pb-16 pt-10 md:px-10 md:pt-8">
+    <section class="mx-auto max-w-6xl">
+        <div class="mb-8 text-center">
             <p class="mb-3 text-sm text-neutral-500">Collaboration</p>
             <h1 class="text-4xl font-black md:text-5xl"><?php echo esc_html($collaboration['title']); ?></h1>
             <p class="mt-4 text-sm uppercase tracking-[0.25em] text-neutral-500"><?php echo esc_html($collaboration['subtitle']); ?></p>
         </div>
 
-        <div class="grid items-start gap-8 md:grid-cols-[0.95fr_1.05fr]">
-            <div class="overflow-hidden rounded-[2rem] border border-neutral-200 bg-white p-4 shadow-sm">
+        <div class="grid items-start gap-7 md:grid-cols-[0.9fr_1fr]">
+            <div class="overflow-hidden rounded-[2rem] border border-neutral-200 bg-white p-3 shadow-sm">
                 <div class="overflow-hidden rounded-[1.5rem] bg-neutral-100">
                     <img
                         src="<?php echo esc_url($collaboration['image']); ?>"
@@ -29,7 +29,7 @@ if (!$collaboration) {
                 </div>
             </div>
 
-            <div class="rounded-[2rem] border border-neutral-200 bg-neutral-50 p-8 shadow-sm md:p-10">
+            <div class="rounded-[2rem] border border-neutral-200 bg-neutral-50 p-7 shadow-sm md:p-8">
                 <p class="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Project</p>
                 <h2 class="mt-4 text-3xl font-black uppercase leading-tight"><?php echo esc_html($collaboration['title']); ?></h2>
                 <p class="mt-5 text-base leading-8 text-neutral-600"><?php echo esc_html($collaboration['excerpt']); ?></p>
@@ -45,3 +45,5 @@ if (!$collaboration) {
 </main>
 
 <?php get_footer(); ?>
+
+

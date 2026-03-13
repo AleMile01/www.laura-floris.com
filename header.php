@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -31,8 +31,8 @@ if (!defined('ABSPATH')) {
     </div>
 </header>
 
-<button id="menu-toggle" class="laura-mobile-toggle fixed right-4 top-4 z-[70] inline-flex h-14 w-14 items-center justify-center rounded-full border border-neutral-200 bg-white/95 text-neutral-900 shadow-lg transition hover:bg-neutral-900 hover:text-white md:hidden" aria-controls="mobile-menu" aria-expanded="false" aria-label="Apri menu">
-    <span class="sr-only">Apri menu</span>
+<button id="menu-toggle" type="button" class="laura-mobile-toggle fixed right-4 top-4 z-[70] inline-flex h-14 w-14 items-center justify-center rounded-full border border-neutral-200 bg-white/95 text-neutral-900 shadow-lg transition hover:bg-neutral-900 hover:text-white md:hidden" aria-controls="mobile-menu" aria-expanded="false" aria-label="Apri il menu">
+    <span class="sr-only">Apri il menu</span>
     <span class="flex h-5 w-5 flex-col items-center justify-between">
         <span class="block h-0.5 w-5 bg-current transition-transform duration-300"></span>
         <span class="block h-0.5 w-5 bg-current transition-opacity duration-300"></span>
@@ -52,8 +52,10 @@ if (!defined('ABSPATH')) {
     ?>
 </aside>
 
-<button id="back-to-top" class="pointer-events-none fixed bottom-6 right-6 z-[65] inline-flex h-14 w-14 translate-y-4 items-center justify-center rounded-full bg-neutral-900 text-white opacity-0 shadow-lg transition duration-300 hover:opacity-85" aria-label="Torna in alto">
-    <span class="text-lg leading-none">↑</span>
+<button id="back-to-top" type="button" class="pointer-events-none fixed bottom-6 right-6 z-[65] inline-flex h-14 w-14 translate-y-4 items-center justify-center rounded-full bg-neutral-900 text-white opacity-0 shadow-lg transition duration-300 hover:opacity-85" aria-label="Torna in alto">
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M5 12.5L10 7.5L15 12.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
 </button>
 
 <div class="site-content">

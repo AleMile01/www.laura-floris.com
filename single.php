@@ -1,10 +1,10 @@
 <?php get_header(); ?>
 
-<main class="px-6 py-16 md:px-10">
+<main class="px-6 pb-16 pt-10 md:px-10 md:pt-8">
     <div class="mx-auto max-w-4xl">
         <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
             <article <?php post_class(); ?>>
-                <header class="mb-10">
+                <header class="mb-8">
                     <p class="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-neutral-500">
                         <?php echo esc_html(get_the_date()); ?>
                     </p>
@@ -26,3 +26,4 @@
 </main>
 
 <?php get_footer(); ?>
+

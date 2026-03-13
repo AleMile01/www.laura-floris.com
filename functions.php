@@ -5,8 +5,12 @@ if (!defined('ABSPATH')) {
 }
 
 function laura_floris_theme_setup() {
+    load_theme_textdomain('laura-floris', get_template_directory() . '/languages');
+
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
+    add_theme_support('automatic-feed-links');
+    add_theme_support('responsive-embeds');
     add_theme_support('html5', array(
         'search-form',
         'comment-form',
@@ -42,18 +46,54 @@ function laura_floris_enqueue_assets() {
         'laura-floris-style',
         get_stylesheet_uri(),
         array(),
-        '1.2'
+        '1.3'
     );
 
     wp_enqueue_script(
         'laura-floris-theme-js',
         get_template_directory_uri() . '/assets/theme.js',
         array(),
-        '1.2',
+        '1.3',
         true
     );
 }
 add_action('wp_enqueue_scripts', 'laura_floris_enqueue_assets');
+
+function laura_floris_get_meta_description() {
+    if (is_front_page()) {
+        return 'Laura Floris is a digital artist and fashion designer creating artworks, brand collaborations and curated visual projects.';
+    }
+
+    if (is_page('about')) {
+        return 'Discover Laura Floris, her background, collaborations and press mentions in fashion and visual culture.';
+    }
+
+    if (is_post_type_archive('artwork') || is_page('artworks')) {
+        return 'Browse artworks by Laura Floris, including digital illustrations, editorial visuals and selected creative projects.';
+    }
+
+    if (function_exists('is_shop') && is_shop()) {
+        return 'Explore the Laura Floris shop with prints, limited editions and digital works.';
+    }
+
+    if (is_singular()) {
+        $excerpt = has_excerpt() ? get_the_excerpt() : wp_strip_all_tags(get_the_title());
+        return wp_trim_words($excerpt, 24, '');
+    }
+
+    return get_bloginfo('description');
+}
+
+function laura_floris_render_meta_description() {
+    $description = trim((string) laura_floris_get_meta_description());
+
+    if ($description === '') {
+        return;
+    }
+
+    echo '<meta name="description" content="' . esc_attr($description) . '">' . "\n";
+}
+add_action('wp_head', 'laura_floris_render_meta_description', 1);
 
 function laura_floris_menu_fallback() {
     echo '<nav class="main-navigation hidden gap-8 text-sm font-medium uppercase tracking-[0.2em] md:flex">';
