@@ -13,18 +13,18 @@ if (!$collaboration) {
 <main class="px-6 pb-16 pt-10 md:px-10 md:pt-8">
     <section class="mx-auto max-w-6xl">
         <div class="mb-8 text-center">
-            <p class="mb-3 text-sm text-neutral-500">Collaboration</p>
+            <p class="mb-3 text-sm text-neutral-500">Project</p>
             <h1 class="text-4xl font-black md:text-5xl"><?php echo esc_html($collaboration['title']); ?></h1>
             <p class="mt-4 text-sm uppercase tracking-[0.25em] text-neutral-500"><?php echo esc_html($collaboration['subtitle']); ?></p>
         </div>
 
-        <div class="grid items-start gap-7 md:grid-cols-[0.9fr_1fr]">
+        <div class="grid items-start gap-5 md:gap-7 md:grid-cols-[0.9fr_1fr]">
             <div class="overflow-hidden rounded-[2rem] border border-neutral-200 bg-white p-3 shadow-sm">
                 <div class="overflow-hidden rounded-[1.5rem] bg-neutral-100">
                     <img
                         src="<?php echo esc_url($collaboration['image']); ?>"
                         alt="<?php echo esc_attr($collaboration['title']); ?>"
-                        class="aspect-[4/5] h-full w-full object-cover"
+                        class="aspect-[16/10] h-full w-full object-cover md:aspect-[4/5]"
                     >
                 </div>
             </div>
@@ -38,7 +38,7 @@ if (!$collaboration) {
                     <p class="mt-5 text-base leading-8 text-neutral-600"><?php echo esc_html($paragraph); ?></p>
                 <?php endforeach; ?>
 
-                <a href="<?php echo esc_url(home_url('/#collaborations')); ?>" class="mt-8 inline-flex rounded-full border border-neutral-900 px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition hover:bg-neutral-900 hover:text-white">Back to collaborations</a>
+                <a href="<?php echo esc_url(laura_floris_get_projects_url()); ?>" class="mt-8 inline-flex rounded-full border border-neutral-900 px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition hover:bg-neutral-900 hover:text-white">Back to projects</a>
             </div>
         </div>
     </section>

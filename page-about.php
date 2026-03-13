@@ -16,7 +16,7 @@ get_header();
             <div class="group overflow-hidden rounded-3xl bg-neutral-100 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
                 <div class="aspect-[4/5] overflow-hidden">
                     <img
-                        src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/laurafoto.png'); ?>"
+                        src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/laurafoto.webp'); ?>"
                         alt="Laura Floris"
                         class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                     >
@@ -24,7 +24,7 @@ get_header();
 
                 <div class="p-5 text-center">
                     <h2 class="text-lg font-semibold">Laura Floris</h2>
-                    <p class="mt-2 text-sm text-neutral-600">Digital artist & fashion designer</p>
+                    <p class="mt-2 text-sm text-neutral-600">Digital artist</p>
 
                     <div class="mt-6 flex justify-center gap-4">
                         <a href="https://www.instagram.com/laurafloris" target="_blank" rel="noreferrer" class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-neutral-900 text-white shadow-lg transition hover:-translate-y-1 hover:bg-neutral-700" aria-label="Instagram">
@@ -48,16 +48,16 @@ get_header();
             <div class="self-start rounded-3xl border border-neutral-200 bg-neutral-50 p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg md:p-8">
                 <h2 class="mb-5 text-2xl font-semibold">Laura Floris</h2>
                 <p class="text-neutral-600 leading-7">
-                    Laura Floris de Las Casas, conocida art&iacute;sticamente como La Floris, es una ilustradora que ha creado un universo visual donde el color es el aut&eacute;ntico protagonista. Nacida en Madrid y criada en Imperia (Italia), estudi&oacute; Moda en el IED de Madrid, iniciando un camino creativo que la llev&oacute; a trabajar en producciones televisivas como Zapeando, El Intermedio y el departamento de vestuario de La Catedral del Mar.
+                    Laura Floris de Las Casas, artistically known as La Floris, is an illustrator who has created a visual universe where color is the true protagonist. Born in Madrid and raised in Imperia, Italy, she studied Fashion at IED Madrid, beginning a creative path that led her to work on television productions such as Zapeando, El Intermedio, and in the costume department of La Catedral del Mar.
                 </p>
                 <p class="mt-5 text-neutral-600 leading-7">
-                    Su trayectoria dio un giro con el descubrimiento de la ilustraci&oacute;n digital, donde desarroll&oacute; un estilo vibrante y reconocible, lleno de gui&ntilde;os a la moda, el cine y la cultura pop. Ha trabajado para clientes como El Pa&iacute;s, Eme21 Magazine, la revista cultural ilustrada de Madrid, Elle Italia, Citro&euml;n y Desigual.
+                    Her journey took a new direction with the discovery of digital illustration, where she developed a vibrant and recognizable style filled with references to fashion, cinema, and pop culture. She has worked for clients such as El Pais, Eme21 Magazine, Madrid's illustrated cultural magazine, Elle Italia, Citroen, and Desigual.
                 </p>
                 <p class="mt-4 text-neutral-600 leading-7">
-                    Entre sus proyectos m&aacute;s destacados se encuentra la escritura e ilustraci&oacute;n de la biograf&iacute;a de Lady Gaga para la editorial Lunwerg (Grupo Planeta).
+                    Among her most notable projects is the writing and illustration of Lady Gaga's biography for the publisher Lunwerg, part of Grupo Planeta.
                 </p>
                 <p class="mt-4 text-neutral-600 leading-7">
-                    Tras a&ntilde;os centrada en retratos y figuras humanas, desde 2024 las ciudades se han convertido en sus nuevas musas. Madrid fue el punto de partida de un proyecto que en 2025 se expande a distintas ciudades del mundo, reinterpretando paisajes urbanos con una paleta explosiva y transform&aacute;ndolos en escenas llenas de vida, energ&iacute;a y personalidad.
+                    After years focused on portraits and human figures, since 2024 cities have become her new muses. Madrid was the starting point of a project that expands to different cities around the world in 2025, reinterpreting urban landscapes through an explosive palette and transforming them into scenes full of life, energy, and personality.
                 </p>
             </div>
         </div>

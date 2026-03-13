@@ -1,9 +1,5 @@
 <?php get_header(); ?>
 
-<?php
-$collaborations = laura_floris_get_collaborations();
-?>
-
 <main id="home">
     <h1 class="sr-only">Laura Floris, digital artist and fashion designer</h1>
 
@@ -11,7 +7,7 @@ $collaborations = laura_floris_get_collaborations();
         <div id="hero-logo-wrap" class="mx-auto mb-4 max-w-7xl text-center transition-opacity duration-300">
             <div class="brandLogoCenter">
                 <img
-                    src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/logo.png'); ?>"
+                    src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/logo.webp'); ?>"
                     alt="Laura Floris"
                     class="mx-auto h-36 w-auto"
                     fetchpriority="high"
@@ -22,9 +18,19 @@ $collaborations = laura_floris_get_collaborations();
 
     <section class="px-6 pb-16 md:px-10" aria-label="Featured sections">
         <div class="home-feature-grid mx-auto grid max-w-7xl grid-cols-1 gap-4 md:grid-cols-3">
+            <a href="<?php echo esc_url(laura_floris_get_projects_url()); ?>" class="home-feature-card group relative overflow-hidden rounded-3xl shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl" aria-label="Explore projects">
+                <div class="home-feature-card__media overflow-hidden">
+                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/laurafoto.webp'); ?>" alt="Projects" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                </div>
+                <div class="absolute inset-0 bg-black/20 transition duration-300 group-hover:bg-black/35"></div>
+                <div class="absolute inset-0 flex items-center justify-center p-6">
+                    <h2 class="text-center text-xl font-semibold uppercase tracking-[0.18em] text-white md:text-2xl">Project</h2>
+                </div>
+            </a>
+
             <a href="<?php echo esc_url(home_url('/artworks')); ?>" class="home-feature-card group relative overflow-hidden rounded-3xl shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl" aria-label="Explore artworks">
                 <div class="home-feature-card__media overflow-hidden">
-                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/namaste.png'); ?>" alt="Artworks" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/newyork.webp'); ?>" alt="Artworks" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                 </div>
                 <div class="absolute inset-0 bg-black/20 transition duration-300 group-hover:bg-black/35"></div>
                 <div class="absolute inset-0 flex items-center justify-center p-6">
@@ -32,57 +38,15 @@ $collaborations = laura_floris_get_collaborations();
                 </div>
             </a>
 
-            <a href="<?php echo esc_url(home_url('/about')); ?>" class="home-feature-card group relative overflow-hidden rounded-3xl shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl" aria-label="Read more about Laura Floris">
-                <div class="home-feature-card__media overflow-hidden">
-                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/laurafoto.png'); ?>" alt="About Laura Floris" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-                </div>
-                <div class="absolute inset-0 bg-black/20 transition duration-300 group-hover:bg-black/35"></div>
-                <div class="absolute inset-0 flex items-center justify-center p-6">
-                    <h2 class="text-center text-xl font-semibold uppercase tracking-[0.18em] text-white md:text-2xl">About</h2>
-                </div>
-            </a>
-
             <a href="<?php echo esc_url(home_url('/shop')); ?>" class="home-feature-card group relative overflow-hidden rounded-3xl shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl" aria-label="Open the shop">
                 <div class="home-feature-card__media overflow-hidden">
-                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/2020.png'); ?>" alt="Laura Floris shop" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/shopfoto.webp'); ?>" alt="Laura Floris shop" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                 </div>
                 <div class="absolute inset-0 bg-black/20 transition duration-300 group-hover:bg-black/35"></div>
                 <div class="absolute inset-0 flex items-center justify-center p-6">
                     <h2 class="text-center text-xl font-semibold uppercase tracking-[0.18em] text-white md:text-2xl">Shop</h2>
                 </div>
             </a>
-        </div>
-    </section>
-
-    <section class="border-t border-neutral-200 px-6 py-16 md:px-10" id="collaborations">
-        <div class="mx-auto max-w-7xl">
-            <div class="mb-10 max-w-2xl">
-                <p class="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-neutral-500">Collaborations</p>
-                <h2 class="text-3xl font-black uppercase md:text-4xl">Discover my collaboration</h2>
-            </div>
-
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-                <div class="flex flex-col rounded-[2rem] border border-neutral-200 bg-neutral-50 p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-                    <p class="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Collaboration</p>
-                    <h3 class="text-2xl font-bold uppercase leading-tight"><?php echo esc_html($collaborations['agatha-ruiz-de-la-prada']['title']); ?></h3>
-                    <p class="mt-4 text-sm leading-7 text-neutral-600"><?php echo esc_html($collaborations['agatha-ruiz-de-la-prada']['excerpt']); ?></p>
-                    <a href="<?php echo esc_url(laura_floris_get_collaboration_url('agatha-ruiz-de-la-prada')); ?>" class="mt-auto inline-flex w-fit rounded-full border border-neutral-900 px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition hover:bg-neutral-900 hover:text-white">Show</a>
-                </div>
-
-                <div class="flex flex-col rounded-[2rem] border border-neutral-200 bg-neutral-50 p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-                    <p class="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Collaboration</p>
-                    <h3 class="text-2xl font-bold uppercase leading-tight"><?php echo esc_html($collaborations['netflix']['title']); ?></h3>
-                    <p class="mt-4 text-sm leading-7 text-neutral-600"><?php echo esc_html($collaborations['netflix']['excerpt']); ?></p>
-                    <a href="<?php echo esc_url(laura_floris_get_collaboration_url('netflix')); ?>" class="mt-auto inline-flex w-fit rounded-full border border-neutral-900 px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition hover:bg-neutral-900 hover:text-white">Show</a>
-                </div>
-
-                <div class="flex flex-col rounded-[2rem] border border-neutral-200 bg-neutral-50 p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-                    <p class="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Collaboration</p>
-                    <h3 class="text-2xl font-bold uppercase leading-tight"><?php echo esc_html($collaborations['hbo']['title']); ?></h3>
-                    <p class="mt-4 text-sm leading-7 text-neutral-600"><?php echo esc_html($collaborations['hbo']['excerpt']); ?></p>
-                    <a href="<?php echo esc_url(laura_floris_get_collaboration_url('hbo')); ?>" class="mt-auto inline-flex w-fit rounded-full border border-neutral-900 px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition hover:bg-neutral-900 hover:text-white">Show</a>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -95,7 +59,7 @@ $collaborations = laura_floris_get_collaborations();
                     Hi, I'm Laura Floris. <br>
                     I'm from Madrid but I grew up in Italy, <br>
                     I'm a bilingual Italian and Spanish native speaker. <br>
-                    Fashion Designer and Digital Artist Freelance.
+                    Digital Artist Freelance.
                 </p>
                 <p class="mt-6 max-w-2xl text-base leading-8 text-neutral-600">
                     For greetings, small or pro-scale jobs please send an email to laflorisart@gmail.com
@@ -104,12 +68,12 @@ $collaborations = laura_floris_get_collaborations();
 
             <a href="<?php echo esc_url(home_url('/about')); ?>" class="group block w-full max-w-[17rem] justify-self-center overflow-hidden rounded-3xl bg-neutral-100 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl" aria-label="Go to About page">
                 <div class="aspect-[4/5] overflow-hidden">
-                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/laurafoto.png'); ?>" alt="Laura Floris" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/laurafoto.webp'); ?>" alt="Laura Floris" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                 </div>
                 <div class="p-5 text-center">
                     <h3 class="text-base font-semibold">Laura Floris</h3>
-                    <p class="mt-2 text-xs text-neutral-600">Digital artist & fashion designer</p>
-                    <span class="mt-5 inline-flex text-xs uppercase tracking-[0.2em] text-neutral-500">View</span>
+                    <p class="mt-2 text-xs text-neutral-600">Digital artist</p>
+                    <span class="mt-5 inline-flex text-xs tracking-[0.1em] text-neutral-500">Show more</span>
                 </div>
             </a>
         </div>

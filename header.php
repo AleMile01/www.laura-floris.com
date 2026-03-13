@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
 <header id="site-header" class="fixed inset-x-0 top-0 z-50 hidden border-b border-neutral-200 bg-white/90 backdrop-blur transition-transform duration-300 md:block">
     <div class="mx-auto relative flex max-w-7xl items-center justify-between px-6 py-5 md:px-10">
         <a href="<?php echo esc_url(home_url('/')); ?>" id="navbar-logo" class="pointer-events-none text-sm font-black uppercase tracking-[0.35em] opacity-0 transition-all duration-300 md:text-base" aria-hidden="true">
-            <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/logo.png'); ?>" class="h-10" alt="<?php bloginfo('name'); ?>">
+            <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/logo.webp'); ?>" class="h-10" alt="<?php bloginfo('name'); ?>">
         </a>
 
         <?php
@@ -57,5 +57,28 @@ if (!defined('ABSPATH')) {
         <path d="M5 12.5L10 7.5L15 12.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
     </svg>
 </button>
+
+<div id="contact-fab" class="contact-fab fixed bottom-6 left-6 z-[66] flex flex-col items-start gap-3">
+    <a href="https://www.instagram.com/laurafloris" target="_blank" rel="noreferrer" class="contact-fab__action" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.8"></rect>
+            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"></circle>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor"></circle>
+        </svg>
+    </a>
+    <a href="mailto:laflorisart@gmail.com" class="contact-fab__action" aria-label="Email">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="1.8"></rect>
+            <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></polyline>
+        </svg>
+    </a>
+    <button id="contact-fab-toggle" type="button" class="contact-fab__toggle" aria-expanded="false" aria-controls="contact-fab" aria-label="Open contact options">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 7.75C5 6.78 5.78 6 6.75 6H17.25C18.22 6 19 6.78 19 7.75V14.25C19 15.22 18.22 16 17.25 16H10.5L7.2 18.55C6.62 18.99 5.8 18.58 5.8 17.86V16C5.34 15.72 5 15.03 5 14.25V7.75Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M8 10.5H16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+            <path d="M8 13H13.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+        </svg>
+    </button>
+</div>
 
 <div class="site-content">

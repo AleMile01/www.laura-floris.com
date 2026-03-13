@@ -46,14 +46,14 @@ function laura_floris_enqueue_assets() {
         'laura-floris-style',
         get_stylesheet_uri(),
         array(),
-        '1.3'
+        '1.4'
     );
 
     wp_enqueue_script(
         'laura-floris-theme-js',
         get_template_directory_uri() . '/assets/theme.js',
         array(),
-        '1.3',
+        '1.4',
         true
     );
 }
@@ -61,11 +61,15 @@ add_action('wp_enqueue_scripts', 'laura_floris_enqueue_assets');
 
 function laura_floris_get_meta_description() {
     if (is_front_page()) {
-        return 'Laura Floris is a digital artist and fashion designer creating artworks, brand collaborations and curated visual projects.';
+        return 'Laura Floris is a digital artist and fashion designer creating artworks and curated visual projects.';
+    }
+
+    if (get_query_var('laura_projects_page')) {
+        return 'Explore Laura Floris projects, from fashion and editorial concepts to entertainment-focused visual work.';
     }
 
     if (is_page('about')) {
-        return 'Discover Laura Floris, her background, collaborations and press mentions in fashion and visual culture.';
+        return 'Discover Laura Floris, her background, selected projects and press mentions in fashion and visual culture.';
     }
 
     if (is_post_type_archive('artwork') || is_page('artworks')) {
@@ -98,6 +102,7 @@ add_action('wp_head', 'laura_floris_render_meta_description', 1);
 function laura_floris_menu_fallback() {
     echo '<nav class="main-navigation hidden gap-8 text-sm font-medium uppercase tracking-[0.2em] md:flex">';
     echo '<a href="' . esc_url(home_url('/')) . '" class="transition hover:opacity-60">Home</a>';
+    echo '<a href="' . esc_url(laura_floris_get_projects_url()) . '" class="transition hover:opacity-60">Project</a>';
     echo '<a href="' . esc_url(home_url('/artworks')) . '" class="transition hover:opacity-60">Artworks</a>';
     echo '<a href="' . esc_url(home_url('/about')) . '" class="transition hover:opacity-60">About</a>';
     echo '<a href="' . esc_url(home_url('/shop')) . '" class="transition hover:opacity-60">Shop</a>';
@@ -107,27 +112,126 @@ function laura_floris_menu_fallback() {
 function laura_floris_mobile_menu_fallback() {
     echo '<nav class="flex flex-col gap-6 text-base font-medium uppercase tracking-[0.2em]">';
     echo '<a href="' . esc_url(home_url('/')) . '" class="transition hover:opacity-60">Home</a>';
+    echo '<a href="' . esc_url(laura_floris_get_projects_url()) . '" class="transition hover:opacity-60">Project</a>';
     echo '<a href="' . esc_url(home_url('/artworks')) . '" class="transition hover:opacity-60">Artworks</a>';
     echo '<a href="' . esc_url(home_url('/about')) . '" class="transition hover:opacity-60">About</a>';
     echo '<a href="' . esc_url(home_url('/shop')) . '" class="transition hover:opacity-60">Shop</a>';
     echo '</nav>';
 }
 
-function laura_floris_prepend_home_menu_item($items, $args) {
+function laura_floris_get_projects_url() {
+    return home_url('/projects/');
+}
+
+function laura_floris_get_artwork_groups() {
+    $base_image_path = get_template_directory_uri() . '/assets/images/';
+
+    return array(
+        'cities-world' => array(
+            'label'       => 'Cities Of The World',
+            'title'       => 'Cities Of The World',
+            'description' => 'Urban views reimagined through bold color, movement and atmosphere.',
+            'cover'       => $base_image_path . 'image00011.webp',
+            'items'       => array(
+                array(
+                    'title' => 'Great Wall',
+                    'image' => $base_image_path . 'image00009.webp',
+                ),
+                array(
+                    'title' => 'Paris',
+                    'image' => $base_image_path . 'image00011.webp',
+                ),
+                array(
+                    'title' => 'Dubai',
+                    'image' => $base_image_path . 'image00012.webp',
+                ),
+                array(
+                    'title' => 'Evening Streets',
+                    'image' => $base_image_path . 'image00013.webp',
+                ),
+            ),
+        ),
+        'madrid' => array(
+            'label'       => 'Madrid',
+            'title'       => 'Madrid',
+            'description' => 'A focused selection with warm architectural scenes and Mediterranean light.',
+            'cover'       => $base_image_path . 'image00014.webp',
+            'items'       => array(
+                array(
+                    'title' => 'Sunset Citadel',
+                    'image' => $base_image_path . 'image00014.webp',
+                ),
+                array(
+                    'title' => 'Coastal Escape',
+                    'image' => $base_image_path . 'image00015.webp',
+                ),
+                array(
+                    'title' => 'Rio at Sunset',
+                    'image' => $base_image_path . 'image00016.webp',
+                ),
+            ),
+        ),
+        'character' => array(
+            'label'       => 'Character',
+            'title'       => 'Character',
+            'description' => 'Character-led scenes where figures, mood and travel storytelling come together.',
+            'cover'       => $base_image_path . 'image00008.webp',
+            'items'       => array(
+                array(
+                    'title' => 'Quiet Observer',
+                    'image' => $base_image_path . 'image00008.webp',
+                ),
+                array(
+                    'title' => 'Island Horizon',
+                    'image' => $base_image_path . 'image00010.webp',
+                ),
+                array(
+                    'title' => 'Over Rio',
+                    'image' => $base_image_path . 'image00016.webp',
+                ),
+            ),
+        ),
+    );
+}
+
+function laura_floris_get_artwork_group($slug) {
+    $groups = laura_floris_get_artwork_groups();
+
+    return isset($groups[$slug]) ? $groups[$slug] : null;
+}
+
+function laura_floris_get_artwork_group_url($slug) {
+    return home_url('/artworks/collection/' . $slug . '/');
+}
+
+function laura_floris_inject_primary_menu_items($items, $args) {
     if (!isset($args->theme_location) || 'primary' !== $args->theme_location) {
         return $items;
     }
 
-    if (strpos($items, 'href="' . esc_url(home_url('/')) . '"') !== false) {
-        return $items;
+    $home_url = esc_url(home_url('/'));
+    $projects_url = esc_url(laura_floris_get_projects_url());
+
+    if (strpos($items, 'href="' . $home_url . '"') === false) {
+        $home_classes = is_front_page() ? 'menu-item menu-item-home current-menu-item current_page_item' : 'menu-item menu-item-home';
+        $home_item = '<li class="' . esc_attr($home_classes) . '"><a href="' . $home_url . '">Home</a></li>';
+        $items = $home_item . $items;
     }
 
-    $home_classes = is_front_page() ? 'menu-item menu-item-home current-menu-item current_page_item' : 'menu-item menu-item-home';
-    $home_item = '<li class="' . esc_attr($home_classes) . '"><a href="' . esc_url(home_url('/')) . '">Home</a></li>';
+    if (strpos($items, 'href="' . $projects_url . '"') === false) {
+        $is_projects_current = get_query_var('laura_projects_page') || get_query_var('laura_collaboration');
+        $projects_classes = $is_projects_current ? 'menu-item current-menu-item current_page_item' : 'menu-item';
+        $projects_item = '<li class="' . esc_attr($projects_classes) . '"><a href="' . $projects_url . '">Project</a></li>';
+        if (preg_match('/<li[^>]*>.*?<a[^>]*href="' . preg_quote($home_url, '/') . '"[^>]*>.*?Home.*?<\/a>.*?<\/li>/is', $items)) {
+            $items = preg_replace('/(<li[^>]*>.*?<a[^>]*href="' . preg_quote($home_url, '/') . '"[^>]*>.*?Home.*?<\/a>.*?<\/li>)/is', '$1' . $projects_item, $items, 1);
+        } else {
+            $items = $projects_item . $items;
+        }
+    }
 
-    return $home_item . $items;
+    return $items;
 }
-add_filter('wp_nav_menu_items', 'laura_floris_prepend_home_menu_item', 10, 2);
+add_filter('wp_nav_menu_items', 'laura_floris_inject_primary_menu_items', 10, 2);
 
 function laura_floris_register_artworks_post_type() {
     $labels = array(
@@ -166,31 +270,31 @@ function laura_floris_get_collaborations() {
     return array(
         'agatha-ruiz-de-la-prada' => array(
             'title' => 'Agatha Ruiz De La Prada',
-            'subtitle' => 'Fashion collaboration',
-            'image' => $base_image_path . 'laurafoto.png',
-            'excerpt' => 'A colorful collaboration built around expressive graphics and a playful visual language.',
+            'subtitle' => 'Fashion project',
+            'image' => $base_image_path . 'laurafoto.webp',
+            'excerpt' => 'A colorful project built around expressive graphics and a playful visual language.',
             'description' => array(
-                'This collaboration explores a vibrant mix of fashion illustration, bold colors and iconic shapes inspired by the creative world of Agatha Ruiz De La Prada.',
-                'The project focuses on turning Laura Floris visual identity into a collaboration that feels energetic, feminine and immediately recognizable across fashion-oriented applications.',
+                'This project explores a vibrant mix of fashion illustration, bold colors and iconic shapes inspired by the creative world of Agatha Ruiz De La Prada.',
+                'The project focuses on turning Laura Floris visual identity into a visual direction that feels energetic, feminine and immediately recognizable across fashion-oriented applications.',
             ),
         ),
         'netflix' => array(
             'title' => 'Netflix',
-            'subtitle' => 'Entertainment collaboration',
-            'image' => $base_image_path . '2020.png',
+            'subtitle' => 'Entertainment project',
+            'image' => $base_image_path . 'image00011.webp',
             'excerpt' => 'A visual project inspired by storytelling, atmosphere and strong editorial composition.',
             'description' => array(
-                'The collaboration with Netflix is shaped around visual storytelling, cinematic mood and digital compositions designed to connect illustration with entertainment culture.',
+                'The Netflix project is shaped around visual storytelling, cinematic mood and digital compositions designed to connect illustration with entertainment culture.',
                 'Laura approach combines strong image direction, emotional tone and a clean digital finish to create assets that feel contemporary and memorable.',
             ),
         ),
         'hbo' => array(
             'title' => 'HBO',
-            'subtitle' => 'Editorial collaboration',
-            'image' => $base_image_path . 'madrid.png',
-            'excerpt' => 'An editorial-style collaboration where atmosphere, narrative and visual impact work together.',
+            'subtitle' => 'Editorial project',
+            'image' => $base_image_path . 'image00013.webp',
+            'excerpt' => 'An editorial-style project where atmosphere, narrative and visual impact work together.',
             'description' => array(
-                'This collaboration with HBO is developed with a focus on atmosphere, character and visual depth, translating narrative inspiration into refined digital artwork.',
+                'This HBO project is developed with a focus on atmosphere, character and visual depth, translating narrative inspiration into refined digital artwork.',
                 'The result is a body of work that balances elegance and impact, with compositions made to feel immersive, polished and distinctive.',
             ),
         ),
@@ -204,17 +308,35 @@ function laura_floris_get_collaboration($slug) {
 }
 
 function laura_floris_get_collaboration_url($slug) {
-    return home_url('/collaborations/' . $slug . '/');
+    return laura_floris_get_projects_url() . $slug . '/';
 }
 
 function laura_floris_register_collaboration_routes() {
+    add_rewrite_rule(
+        '^artworks/collection/([^/]+)/?$',
+        'index.php?laura_artwork_collection=$matches[1]',
+        'top'
+    );
+
+    add_rewrite_rule(
+        '^projects/?$',
+        'index.php?laura_projects_page=1',
+        'top'
+    );
+
+    add_rewrite_rule(
+        '^projects/([^/]+)/?$',
+        'index.php?laura_collaboration=$matches[1]',
+        'top'
+    );
+
     add_rewrite_rule(
         '^collaborations/([^/]+)/?$',
         'index.php?laura_collaboration=$matches[1]',
         'top'
     );
 
-    $rewrite_version = 'collaboration-routes-v1';
+    $rewrite_version = 'collaboration-routes-v3';
     if (get_option('laura_floris_rewrite_version') !== $rewrite_version) {
         flush_rewrite_rules(false);
         update_option('laura_floris_rewrite_version', $rewrite_version);
@@ -223,13 +345,27 @@ function laura_floris_register_collaboration_routes() {
 add_action('init', 'laura_floris_register_collaboration_routes');
 
 function laura_floris_register_query_vars($vars) {
+    $vars[] = 'laura_artwork_collection';
     $vars[] = 'laura_collaboration';
+    $vars[] = 'laura_projects_page';
 
     return $vars;
 }
 add_filter('query_vars', 'laura_floris_register_query_vars');
 
 function laura_floris_pre_handle_collaboration_404($preempt, $wp_query) {
+    $artwork_group_slug = get_query_var('laura_artwork_collection');
+
+    if ($artwork_group_slug && laura_floris_get_artwork_group($artwork_group_slug)) {
+        $wp_query->is_404 = false;
+        return true;
+    }
+
+    if (get_query_var('laura_projects_page')) {
+        $wp_query->is_404 = false;
+        return true;
+    }
+
     $slug = get_query_var('laura_collaboration');
 
     if ($slug && laura_floris_get_collaboration($slug)) {
@@ -242,6 +378,26 @@ function laura_floris_pre_handle_collaboration_404($preempt, $wp_query) {
 add_filter('pre_handle_404', 'laura_floris_pre_handle_collaboration_404', 10, 2);
 
 function laura_floris_collaboration_template($template) {
+    $artwork_group_slug = get_query_var('laura_artwork_collection');
+
+    if ($artwork_group_slug && laura_floris_get_artwork_group($artwork_group_slug)) {
+        $custom_template = get_template_directory() . '/page-artwork-collection.php';
+
+        if (file_exists($custom_template)) {
+            status_header(200);
+            return $custom_template;
+        }
+    }
+
+    if (get_query_var('laura_projects_page')) {
+        $custom_template = get_template_directory() . '/page-projects.php';
+
+        if (file_exists($custom_template)) {
+            status_header(200);
+            return $custom_template;
+        }
+    }
+
     $slug = get_query_var('laura_collaboration');
 
     if ($slug && laura_floris_get_collaboration($slug)) {
@@ -258,6 +414,19 @@ function laura_floris_collaboration_template($template) {
 add_filter('template_include', 'laura_floris_collaboration_template');
 
 function laura_floris_collaboration_title_parts($title) {
+    $artwork_group_slug = get_query_var('laura_artwork_collection');
+    $artwork_group = $artwork_group_slug ? laura_floris_get_artwork_group($artwork_group_slug) : null;
+
+    if ($artwork_group) {
+        $title['title'] = $artwork_group['title'];
+        return $title;
+    }
+
+    if (get_query_var('laura_projects_page')) {
+        $title['title'] = 'Projects';
+        return $title;
+    }
+
     $slug = get_query_var('laura_collaboration');
     $collaboration = $slug ? laura_floris_get_collaboration($slug) : null;
 

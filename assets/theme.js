@@ -5,10 +5,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const mobileMenu = document.getElementById('mobile-menu');
   const mobileOverlay = document.getElementById('mobile-menu-overlay');
   const backToTop = document.getElementById('back-to-top');
+  const contactFab = document.getElementById('contact-fab');
+  const contactFabToggle = document.getElementById('contact-fab-toggle');
   const navbarLogo = document.getElementById('navbar-logo');
   const heroLogoWrap = document.getElementById('hero-logo-wrap');
   const mobileMenuLinks = mobileMenu ? mobileMenu.querySelectorAll('a') : [];
   const artworksCarousel = document.querySelector('[data-artworks-carousel]');
+  const artworkGroups = document.querySelector('[data-artwork-groups]');
 
   let lastScrollY = window.scrollY;
 
@@ -117,6 +120,45 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  function closeContactFab() {
+    if (!contactFab || !contactFabToggle) return;
+
+    contactFab.classList.remove('is-open');
+    contactFabToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  function openContactFab() {
+    if (!contactFab || !contactFabToggle) return;
+
+    contactFab.classList.add('is-open');
+    contactFabToggle.setAttribute('aria-expanded', 'true');
+  }
+
+  if (contactFab && contactFabToggle) {
+    contactFabToggle.addEventListener('click', function (event) {
+      event.stopPropagation();
+      const isOpen = contactFab.classList.contains('is-open');
+
+      if (isOpen) {
+        closeContactFab();
+      } else {
+        openContactFab();
+      }
+    });
+
+    document.addEventListener('click', function (event) {
+      if (!contactFab.contains(event.target)) {
+        closeContactFab();
+      }
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        closeContactFab();
+      }
+    });
+  }
+
   window.addEventListener('scroll', function () {
     updateNavbarLogo();
     updateScrollUI();
@@ -157,6 +199,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
       renderCarousel();
     }
+  }
+
+  if (artworkGroups) {
+    const artworkGroupTriggers = Array.from(artworkGroups.querySelectorAll('[data-artwork-group-trigger]'));
+    const artworkGroupPanels = Array.from(artworkGroups.querySelectorAll('[data-artwork-group-panel]'));
+
+    function renderArtworkGroup(activeGroup) {
+      artworkGroupTriggers.forEach(function (trigger) {
+        const isActive = trigger.getAttribute('data-group') === activeGroup;
+        trigger.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+        trigger.classList.toggle('ring-2', isActive);
+        trigger.classList.toggle('ring-neutral-900', isActive);
+        trigger.classList.toggle('ring-offset-4', isActive);
+      });
+
+      artworkGroupPanels.forEach(function (panel) {
+        const isActive = panel.getAttribute('data-group') === activeGroup;
+        panel.classList.toggle('hidden', !isActive);
+        panel.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+      });
+    }
+
+    artworkGroupTriggers.forEach(function (trigger) {
+      trigger.addEventListener('click', function () {
+        renderArtworkGroup(trigger.getAttribute('data-group'));
+      });
+    });
   }
 });
 
