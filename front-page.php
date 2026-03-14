@@ -24,7 +24,7 @@
                 </div>
                 <div class="absolute inset-0 bg-black/20 transition duration-300 group-hover:bg-black/35"></div>
                 <div class="absolute inset-0 flex items-center justify-center p-6">
-                    <h2 class="text-center text-xl font-semibold uppercase tracking-[0.18em] text-white md:text-2xl">Project</h2>
+                    <h2 class="text-center text-xl font-semibold uppercase tracking-[0.18em] text-white md:text-2xl">Projects</h2>
                 </div>
             </a>
 
@@ -53,7 +53,7 @@
     <section class="border-t border-neutral-200 px-6 py-16 md:px-10" id="about">
         <div class="mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.15fr_0.85fr] md:items-center">
             <div>
-                <p class="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-neutral-500">About</p>
+                <p class="notranslate mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-neutral-500" translate="no">About</p>
                 <h2 class="text-3xl font-black uppercase md:text-4xl">Find more about me</h2>
                 <p class="mt-6 max-w-2xl text-base leading-8 text-neutral-600">
                     Hi, I'm Laura Floris. <br>

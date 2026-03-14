@@ -101,20 +101,20 @@ add_action('wp_head', 'laura_floris_render_meta_description', 1);
 
 function laura_floris_menu_fallback() {
     echo '<nav class="main-navigation hidden gap-8 text-sm font-medium uppercase tracking-[0.2em] md:flex">';
-    echo '<a href="' . esc_url(home_url('/')) . '" class="transition hover:opacity-60">Home</a>';
-    echo '<a href="' . esc_url(laura_floris_get_projects_url()) . '" class="transition hover:opacity-60">Project</a>';
+    echo '<a href="' . esc_url(home_url('/')) . '" class="notranslate transition hover:opacity-60" translate="no">Home</a>';
+    echo '<a href="' . esc_url(laura_floris_get_projects_url()) . '" class="transition hover:opacity-60">Projects</a>';
     echo '<a href="' . esc_url(home_url('/artworks')) . '" class="transition hover:opacity-60">Artworks</a>';
-    echo '<a href="' . esc_url(home_url('/about')) . '" class="transition hover:opacity-60">About</a>';
+    echo '<a href="' . esc_url(home_url('/about')) . '" class="notranslate transition hover:opacity-60" translate="no">About</a>';
     echo '<a href="' . esc_url(home_url('/shop')) . '" class="transition hover:opacity-60">Shop</a>';
     echo '</nav>';
 }
 
 function laura_floris_mobile_menu_fallback() {
     echo '<nav class="flex flex-col gap-6 text-base font-medium uppercase tracking-[0.2em]">';
-    echo '<a href="' . esc_url(home_url('/')) . '" class="transition hover:opacity-60">Home</a>';
-    echo '<a href="' . esc_url(laura_floris_get_projects_url()) . '" class="transition hover:opacity-60">Project</a>';
+    echo '<a href="' . esc_url(home_url('/')) . '" class="notranslate transition hover:opacity-60" translate="no">Home</a>';
+    echo '<a href="' . esc_url(laura_floris_get_projects_url()) . '" class="transition hover:opacity-60">Projects</a>';
     echo '<a href="' . esc_url(home_url('/artworks')) . '" class="transition hover:opacity-60">Artworks</a>';
-    echo '<a href="' . esc_url(home_url('/about')) . '" class="transition hover:opacity-60">About</a>';
+    echo '<a href="' . esc_url(home_url('/about')) . '" class="notranslate transition hover:opacity-60" translate="no">About</a>';
     echo '<a href="' . esc_url(home_url('/shop')) . '" class="transition hover:opacity-60">Shop</a>';
     echo '</nav>';
 }
@@ -214,14 +214,14 @@ function laura_floris_inject_primary_menu_items($items, $args) {
 
     if (strpos($items, 'href="' . $home_url . '"') === false) {
         $home_classes = is_front_page() ? 'menu-item menu-item-home current-menu-item current_page_item' : 'menu-item menu-item-home';
-        $home_item = '<li class="' . esc_attr($home_classes) . '"><a href="' . $home_url . '">Home</a></li>';
+        $home_item = '<li class="' . esc_attr($home_classes) . '"><a href="' . $home_url . '" class="notranslate" translate="no">Home</a></li>';
         $items = $home_item . $items;
     }
 
     if (strpos($items, 'href="' . $projects_url . '"') === false) {
         $is_projects_current = get_query_var('laura_projects_page') || get_query_var('laura_collaboration');
         $projects_classes = $is_projects_current ? 'menu-item current-menu-item current_page_item' : 'menu-item';
-        $projects_item = '<li class="' . esc_attr($projects_classes) . '"><a href="' . $projects_url . '">Project</a></li>';
+        $projects_item = '<li class="' . esc_attr($projects_classes) . '"><a href="' . $projects_url . '">Projects</a></li>';
         if (preg_match('/<li[^>]*>.*?<a[^>]*href="' . preg_quote($home_url, '/') . '"[^>]*>.*?Home.*?<\/a>.*?<\/li>/is', $items)) {
             $items = preg_replace('/(<li[^>]*>.*?<a[^>]*href="' . preg_quote($home_url, '/') . '"[^>]*>.*?Home.*?<\/a>.*?<\/li>)/is', '$1' . $projects_item, $items, 1);
         } else {
@@ -232,6 +232,80 @@ function laura_floris_inject_primary_menu_items($items, $args) {
     return $items;
 }
 add_filter('wp_nav_menu_items', 'laura_floris_inject_primary_menu_items', 10, 2);
+
+function laura_floris_protect_menu_labels_from_translation($nav_menu, $args) {
+    if (!isset($args->theme_location) || !in_array($args->theme_location, array('primary', 'footer'), true)) {
+        return $nav_menu;
+    }
+
+    $home_url = preg_quote(esc_url(home_url('/')), '/');
+    $about_url = preg_quote(esc_url(home_url('/about')), '/');
+
+    $nav_menu = preg_replace(
+        '/<a([^>]*href="' . $home_url . '"[^>]*)>(.*?)<\/a>/is',
+        '<a$1 class="notranslate" translate="no">Home</a>',
+        $nav_menu
+    );
+
+    $nav_menu = preg_replace(
+        '/<a([^>]*href="' . $about_url . '"[^>]*)>(.*?)<\/a>/is',
+        '<a$1 class="notranslate" translate="no">About</a>',
+        $nav_menu
+    );
+
+    return $nav_menu;
+}
+add_filter('wp_nav_menu', 'laura_floris_protect_menu_labels_from_translation', 10, 2);
+
+function laura_floris_is_non_translatable_menu_item($item) {
+    if (!isset($item->url)) {
+        return false;
+    }
+
+    $normalized_item_url = untrailingslashit((string) $item->url);
+    $home_url = untrailingslashit(home_url('/'));
+    $about_url = untrailingslashit(home_url('/about'));
+
+    return $normalized_item_url === $home_url || $normalized_item_url === $about_url;
+}
+
+function laura_floris_filter_menu_link_attributes($atts, $item, $args, $depth) {
+    if (!isset($args->theme_location) || !in_array($args->theme_location, array('primary', 'footer'), true)) {
+        return $atts;
+    }
+
+    if (!laura_floris_is_non_translatable_menu_item($item)) {
+        return $atts;
+    }
+
+    $existing_classes = isset($atts['class']) ? trim((string) $atts['class']) : '';
+    $class_tokens = $existing_classes === '' ? array() : preg_split('/\s+/', $existing_classes);
+
+    if (!in_array('notranslate', $class_tokens, true)) {
+        $class_tokens[] = 'notranslate';
+    }
+
+    $atts['class'] = trim(implode(' ', array_filter($class_tokens)));
+    $atts['translate'] = 'no';
+
+    return $atts;
+}
+add_filter('nav_menu_link_attributes', 'laura_floris_filter_menu_link_attributes', 10, 4);
+
+function laura_floris_filter_menu_item_title($title, $item, $args, $depth) {
+    if (!isset($args->theme_location) || !in_array($args->theme_location, array('primary', 'footer'), true)) {
+        return $title;
+    }
+
+    if (!laura_floris_is_non_translatable_menu_item($item)) {
+        return $title;
+    }
+
+    $label = untrailingslashit((string) $item->url) === untrailingslashit(home_url('/about')) ? 'About' : 'Home';
+
+    return '<span class="notranslate" translate="no">' . esc_html($label) . '</span>';
+}
+add_filter('nav_menu_item_title', 'laura_floris_filter_menu_item_title', 10, 4);
 
 function laura_floris_register_artworks_post_type() {
     $labels = array(

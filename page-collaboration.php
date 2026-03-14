@@ -13,7 +13,7 @@ if (!$collaboration) {
 <main class="px-6 pb-16 pt-10 md:px-10 md:pt-8">
     <section class="mx-auto max-w-6xl">
         <div class="mb-8 text-center">
-            <p class="mb-3 text-sm text-neutral-500">Project</p>
+        <p class="mb-3 text-sm text-neutral-500">Projects</p>
             <h1 class="text-4xl font-black md:text-5xl"><?php echo esc_html($collaboration['title']); ?></h1>
             <p class="mt-4 text-sm uppercase tracking-[0.25em] text-neutral-500"><?php echo esc_html($collaboration['subtitle']); ?></p>
         </div>
@@ -30,7 +30,7 @@ if (!$collaboration) {
             </div>
 
             <div class="rounded-[2rem] border border-neutral-200 bg-neutral-50 p-7 shadow-sm md:p-8">
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Project</p>
+                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Projects</p>
                 <h2 class="mt-4 text-3xl font-black uppercase leading-tight"><?php echo esc_html($collaboration['title']); ?></h2>
                 <p class="mt-5 text-base leading-8 text-neutral-600"><?php echo esc_html($collaboration['excerpt']); ?></p>
 

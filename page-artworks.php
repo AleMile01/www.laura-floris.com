@@ -14,12 +14,9 @@ $artwork_groups = laura_floris_get_artwork_groups();
         <div class="mb-8 text-center">
             <p class="mb-3 text-sm text-neutral-500">Artworks</p>
             <h1 class="text-4xl font-black md:text-5xl">Collections</h1>
-            <p class="mx-auto mt-4 max-w-2xl text-base leading-8 text-neutral-600">
-                Browse the artworks by collection and open each selection to explore the pieces inside.
-            </p>
         </div>
 
-        <div class="artwork-collections-grid grid grid-cols-3 items-start gap-3 md:gap-6">
+        <div class="artwork-collections-grid grid grid-cols-1 items-start gap-4 md:grid-cols-3 md:gap-6">
             <?php foreach ($artwork_groups as $slug => $group) : ?>
                 <a href="<?php echo esc_url(laura_floris_get_artwork_group_url($slug)); ?>" class="group overflow-hidden rounded-3xl bg-neutral-100 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
                     <div class="aspect-[4/5] overflow-hidden">
