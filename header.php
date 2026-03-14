@@ -28,8 +28,27 @@ if (!defined('ABSPATH')) {
             'fallback_cb'    => 'laura_floris_menu_fallback',
         ));
         ?>
+
+        <?php if (laura_floris_is_woocommerce_available()) : ?>
+            <div class="ml-auto hidden md:block">
+                <?php echo laura_floris_get_cart_button_markup('laura-cart-button laura-cart-button--desktop'); ?>
+            </div>
+        <?php endif; ?>
     </div>
 </header>
+
+<?php if (laura_floris_is_woocommerce_available()) : ?>
+    <button type="button" class="laura-cart-button laura-cart-button--mobile md:hidden" data-cart-toggle aria-controls="laura-cart-drawer" aria-expanded="false">
+        <span class="laura-cart-button__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+                <path d="M4 5.5H6.2L7.7 15.2C7.85 16.17 8.69 16.88 9.67 16.88H17.75C18.68 16.88 19.49 16.25 19.72 15.35L21 10.25H8.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                <circle cx="10.25" cy="19" r="1.35" fill="currentColor"></circle>
+                <circle cx="17.2" cy="19" r="1.35" fill="currentColor"></circle>
+            </svg>
+        </span>
+        <span class="js-laura-cart-count laura-cart-button__count"><?php echo esc_html(laura_floris_get_cart_count()); ?></span>
+    </button>
+<?php endif; ?>
 
 <button id="menu-toggle" type="button" class="laura-mobile-toggle fixed right-4 top-4 z-[70] inline-flex h-14 w-14 items-center justify-center rounded-full border border-neutral-200 bg-white/95 text-neutral-900 shadow-lg transition hover:bg-neutral-900 hover:text-white md:hidden" aria-controls="mobile-menu" aria-expanded="false" aria-label="Apri il menu">
     <span class="sr-only">Apri il menu</span>
@@ -42,6 +61,14 @@ if (!defined('ABSPATH')) {
 
 <div id="mobile-menu-overlay" class="pointer-events-none fixed inset-0 z-[55] bg-black/0 opacity-0 transition duration-300 md:hidden"></div>
 <aside id="mobile-menu" class="pointer-events-none fixed right-0 top-0 z-[60] flex h-screen w-[min(22rem,88vw)] translate-x-full flex-col bg-white px-6 pb-8 pt-24 shadow-2xl transition-transform duration-300 md:hidden" aria-hidden="true">
+    <?php if (laura_floris_is_woocommerce_available()) : ?>
+        <div class="mb-8 border-b border-neutral-200 pb-6">
+            <a href="<?php echo esc_url(wc_get_cart_url()); ?>" class="inline-flex items-center gap-3 rounded-full border border-neutral-200 px-4 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-neutral-900 transition hover:border-neutral-900 hover:bg-neutral-900 hover:text-white">
+                <span>Cart</span>
+                <span class="js-laura-cart-count inline-flex min-w-8 items-center justify-center rounded-full bg-neutral-900 px-2 py-1 text-xs text-white"><?php echo esc_html(laura_floris_get_cart_count()); ?></span>
+            </a>
+        </div>
+    <?php endif; ?>
     <?php
     wp_nav_menu(array(
         'theme_location' => 'primary',
@@ -80,5 +107,18 @@ if (!defined('ABSPATH')) {
         </svg>
     </button>
 </div>
+
+<?php if (laura_floris_is_woocommerce_available()) : ?>
+    <div id="laura-cart-overlay" class="laura-cart-overlay" aria-hidden="true"></div>
+    <aside id="laura-cart-drawer" class="laura-cart-drawer" aria-hidden="true">
+        <div class="laura-cart-drawer__header">
+            <p class="laura-cart-drawer__eyebrow">Shop cart</p>
+            <button type="button" class="laura-cart-drawer__close" data-cart-close aria-label="Close cart">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <?php laura_floris_render_mini_cart_contents(); ?>
+    </aside>
+<?php endif; ?>
 
 <div class="site-content">

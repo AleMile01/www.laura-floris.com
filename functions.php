@@ -46,18 +46,228 @@ function laura_floris_enqueue_assets() {
         'laura-floris-style',
         get_stylesheet_uri(),
         array(),
-        '1.4'
+        '1.5'
     );
 
     wp_enqueue_script(
         'laura-floris-theme-js',
         get_template_directory_uri() . '/assets/theme.js',
         array(),
-        '1.4',
+        '1.5',
         true
     );
+
+    if (class_exists('WooCommerce')) {
+        wp_enqueue_script('wc-cart-fragments');
+    }
 }
 add_action('wp_enqueue_scripts', 'laura_floris_enqueue_assets');
+
+function laura_floris_is_woocommerce_available() {
+    return class_exists('WooCommerce') && function_exists('WC');
+}
+
+function laura_floris_ensure_woocommerce_pages() {
+    if (!class_exists('WooCommerce') || !function_exists('wc_create_page')) {
+        return;
+    }
+
+    $required_pages = array(
+        'woocommerce_cart_page_id' => array(
+            'slug'    => 'cart',
+            'title'   => 'Cart',
+            'content' => '[woocommerce_cart]',
+        ),
+        'woocommerce_checkout_page_id' => array(
+            'slug'    => 'checkout',
+            'title'   => 'Checkout',
+            'content' => '[woocommerce_checkout]',
+        ),
+    );
+
+    foreach ($required_pages as $option_name => $page_config) {
+        $page_id = (int) get_option($option_name);
+        $page = $page_id > 0 ? get_post($page_id) : null;
+
+        if ($page && 'page' === $page->post_type && 'trash' !== $page->post_status) {
+            continue;
+        }
+
+        wc_create_page(
+            $page_config['slug'],
+            $option_name,
+            $page_config['title'],
+            $page_config['content']
+        );
+    }
+}
+add_action('init', 'laura_floris_ensure_woocommerce_pages', 20);
+
+function laura_floris_get_cart_count() {
+    if (!laura_floris_is_woocommerce_available() || !WC()->cart) {
+        return 0;
+    }
+
+    return (int) WC()->cart->get_cart_contents_count();
+}
+
+function laura_floris_get_cart_subtotal() {
+    if (!laura_floris_is_woocommerce_available() || !WC()->cart) {
+        return '';
+    }
+
+    return wp_strip_all_tags(WC()->cart->get_cart_subtotal());
+}
+
+function laura_floris_get_shop_url() {
+    if (function_exists('wc_get_page_permalink')) {
+        $shop_url = wc_get_page_permalink('shop');
+
+        if ($shop_url) {
+            return $shop_url;
+        }
+    }
+
+    return home_url('/shop/');
+}
+
+function laura_floris_get_cart_page_url() {
+    if (function_exists('wc_get_cart_url')) {
+        return wc_get_cart_url();
+    }
+
+    return home_url('/cart/');
+}
+
+function laura_floris_get_checkout_page_url() {
+    if (function_exists('wc_get_checkout_url')) {
+        return wc_get_checkout_url();
+    }
+
+    return home_url('/checkout/');
+}
+
+function laura_floris_get_shop_highlights() {
+    return array(
+        array(
+            'label' => __('Curated works', 'laura-floris'),
+            'value' => __('Limited editions and selected digital pieces.', 'laura-floris'),
+        ),
+        array(
+            'label' => __('Secure checkout', 'laura-floris'),
+            'value' => __('Integrated with WooCommerce payment and shipping flow.', 'laura-floris'),
+        ),
+        array(
+            'label' => __('Studio support', 'laura-floris'),
+            'value' => __('A calm and guided purchase path from cart to confirmation.', 'laura-floris'),
+        ),
+    );
+}
+
+function laura_floris_get_cart_button_markup($classes = '') {
+    if (!laura_floris_is_woocommerce_available()) {
+        return '';
+    }
+
+    $count = laura_floris_get_cart_count();
+
+    return sprintf(
+        '<button type="button" class="%1$s" data-cart-toggle aria-controls="laura-cart-drawer" aria-expanded="false"><span class="laura-cart-button__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5H6.2L7.7 15.2C7.85 16.17 8.69 16.88 9.67 16.88H17.75C18.68 16.88 19.49 16.25 19.72 15.35L21 10.25H8.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="10.25" cy="19" r="1.35" fill="currentColor"></circle><circle cx="17.2" cy="19" r="1.35" fill="currentColor"></circle></svg></span><span class="js-laura-cart-count laura-cart-button__count">%2$d</span></button>',
+        esc_attr(trim($classes)),
+        $count
+    );
+}
+
+function laura_floris_render_mini_cart_contents() {
+    if (!laura_floris_is_woocommerce_available()) {
+        return;
+    }
+
+    $count = laura_floris_get_cart_count();
+    $subtotal = laura_floris_get_cart_subtotal();
+    ?>
+    <div class="js-laura-mini-cart-contents">
+        <div class="laura-mini-cart__summary">
+            <div>
+                <p class="laura-mini-cart__eyebrow">Cart</p>
+                <h2 class="laura-mini-cart__title">Selected products</h2>
+            </div>
+            <div class="laura-mini-cart__meta">
+                <span class="js-laura-cart-count"><?php echo esc_html($count); ?></span>
+                <span><?php echo esc_html(_n('item', 'items', $count, 'laura-floris')); ?></span>
+            </div>
+        </div>
+
+        <?php if ($count > 0) : ?>
+            <div class="laura-mini-cart__list">
+                <?php woocommerce_mini_cart(); ?>
+            </div>
+            <div class="laura-mini-cart__footer">
+                <p class="laura-mini-cart__subtotal">
+                    <span>Subtotal</span>
+                    <strong><?php echo esc_html($subtotal); ?></strong>
+                </p>
+                <div class="laura-mini-cart__actions">
+                    <a href="<?php echo esc_url(laura_floris_get_cart_page_url()); ?>" class="laura-mini-cart__link laura-mini-cart__link--secondary">View cart</a>
+                    <a href="<?php echo esc_url(laura_floris_get_checkout_page_url()); ?>" class="laura-mini-cart__link laura-mini-cart__link--primary">Checkout</a>
+                </div>
+            </div>
+        <?php else : ?>
+            <div class="laura-mini-cart__empty">
+                <p>Your cart is empty for now.</p>
+                <a href="<?php echo esc_url(laura_floris_get_shop_url()); ?>" class="laura-mini-cart__link laura-mini-cart__link--primary">Browse products</a>
+            </div>
+        <?php endif; ?>
+    </div>
+    <?php
+}
+
+function laura_floris_add_to_cart_fragments($fragments) {
+    if (!laura_floris_is_woocommerce_available()) {
+        return $fragments;
+    }
+
+    ob_start();
+    ?>
+    <span class="js-laura-cart-count laura-cart-button__count"><?php echo esc_html(laura_floris_get_cart_count()); ?></span>
+    <?php
+    $fragments['.laura-cart-button .js-laura-cart-count'] = ob_get_clean();
+
+    ob_start();
+    laura_floris_render_mini_cart_contents();
+    $fragments['.js-laura-mini-cart-contents'] = ob_get_clean();
+
+    return $fragments;
+}
+add_filter('woocommerce_add_to_cart_fragments', 'laura_floris_add_to_cart_fragments');
+
+function laura_floris_shop_columns($columns) {
+    return 3;
+}
+add_filter('loop_shop_columns', 'laura_floris_shop_columns');
+
+function laura_floris_products_per_page($per_page) {
+    return 9;
+}
+add_filter('loop_shop_per_page', 'laura_floris_products_per_page', 20);
+
+function laura_floris_shop_toolbar_open() {
+    if (!function_exists('is_shop') || (!is_shop() && !is_product_taxonomy())) {
+        return;
+    }
+
+    echo '<div class="laura-shop-toolbar">';
+}
+add_action('woocommerce_before_shop_loop', 'laura_floris_shop_toolbar_open', 19);
+
+function laura_floris_shop_toolbar_close() {
+    if (!function_exists('is_shop') || (!is_shop() && !is_product_taxonomy())) {
+        return;
+    }
+
+    echo '</div>';
+}
+add_action('woocommerce_before_shop_loop', 'laura_floris_shop_toolbar_close', 31);
 
 function laura_floris_get_meta_description() {
     if (is_front_page()) {

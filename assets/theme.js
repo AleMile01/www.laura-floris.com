@@ -4,6 +4,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const menuToggle = document.getElementById('menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
   const mobileOverlay = document.getElementById('mobile-menu-overlay');
+  const cartDrawer = document.getElementById('laura-cart-drawer');
+  const cartOverlay = document.getElementById('laura-cart-overlay');
+  const cartToggleButtons = document.querySelectorAll('[data-cart-toggle]');
+  const cartCloseButtons = document.querySelectorAll('[data-cart-close]');
   const backToTop = document.getElementById('back-to-top');
   const contactFab = document.getElementById('contact-fab');
   const contactFabToggle = document.getElementById('contact-fab-toggle');
@@ -24,7 +28,9 @@ document.addEventListener('DOMContentLoaded', function () {
     mobileMenu.classList.remove('translate-x-0', 'pointer-events-auto');
     mobileOverlay.classList.add('pointer-events-none', 'opacity-0', 'bg-black/0');
     mobileOverlay.classList.remove('pointer-events-auto', 'opacity-100', 'bg-black/30');
-    body.classList.remove('overflow-hidden');
+    if (!cartDrawer || cartDrawer.getAttribute('aria-hidden') === 'true') {
+      body.classList.remove('overflow-hidden');
+    }
     menuToggle.classList.remove('is-open');
   }
 
@@ -39,6 +45,36 @@ document.addEventListener('DOMContentLoaded', function () {
     mobileOverlay.classList.add('pointer-events-auto', 'opacity-100', 'bg-black/30');
     body.classList.add('overflow-hidden');
     menuToggle.classList.add('is-open');
+  }
+
+  function closeCartDrawer() {
+    if (!cartDrawer || !cartOverlay) return;
+
+    cartDrawer.setAttribute('aria-hidden', 'true');
+    cartOverlay.setAttribute('aria-hidden', 'true');
+    cartDrawer.classList.remove('is-open');
+    cartOverlay.classList.remove('is-open');
+    cartToggleButtons.forEach(function (button) {
+      button.setAttribute('aria-expanded', 'false');
+    });
+
+    if (!mobileMenu || mobileMenu.getAttribute('aria-hidden') === 'true') {
+      body.classList.remove('overflow-hidden');
+    }
+  }
+
+  function openCartDrawer() {
+    if (!cartDrawer || !cartOverlay) return;
+
+    closeMobileMenu();
+    cartDrawer.setAttribute('aria-hidden', 'false');
+    cartOverlay.setAttribute('aria-hidden', 'false');
+    cartDrawer.classList.add('is-open');
+    cartOverlay.classList.add('is-open');
+    cartToggleButtons.forEach(function (button) {
+      button.setAttribute('aria-expanded', 'true');
+    });
+    body.classList.add('overflow-hidden');
   }
 
   if (menuToggle && mobileMenu && mobileOverlay) {
@@ -61,6 +97,26 @@ document.addEventListener('DOMContentLoaded', function () {
         closeMobileMenu();
       }
     });
+  }
+
+  if (cartDrawer && cartOverlay && cartToggleButtons.length) {
+    cartToggleButtons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        const isOpen = cartDrawer.getAttribute('aria-hidden') === 'false';
+
+        if (isOpen) {
+          closeCartDrawer();
+        } else {
+          openCartDrawer();
+        }
+      });
+    });
+
+    cartCloseButtons.forEach(function (button) {
+      button.addEventListener('click', closeCartDrawer);
+    });
+
+    cartOverlay.addEventListener('click', closeCartDrawer);
   }
 
   function updateNavbarLogo() {
@@ -155,6 +211,8 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('keydown', function (event) {
       if (event.key === 'Escape') {
         closeContactFab();
+        closeCartDrawer();
+        closeMobileMenu();
       }
     });
   }
