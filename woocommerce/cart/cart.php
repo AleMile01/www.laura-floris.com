@@ -9,20 +9,11 @@ defined('ABSPATH') || exit;
 
 $shop_url = function_exists('laura_floris_get_shop_url') ? laura_floris_get_shop_url() : home_url('/shop/');
 $checkout_url = function_exists('laura_floris_get_checkout_page_url') ? laura_floris_get_checkout_page_url() : home_url('/checkout/');
-$highlights = function_exists('laura_floris_get_shop_highlights') ? laura_floris_get_shop_highlights() : array();
 ?>
 
 <?php do_action('woocommerce_before_cart'); ?>
 
 <section class="laura-cart-page">
-    <div class="laura-cart-page__intro">
-        <div>
-            <p class="laura-cart-page__eyebrow"><?php esc_html_e('Cart overview', 'laura-floris'); ?></p>
-            <h2 class="laura-cart-page__title"><?php esc_html_e('A dedicated space to review your selection.', 'laura-floris'); ?></h2>
-        </div>
-        <p class="laura-cart-page__description"><?php esc_html_e('Update quantities, apply a coupon and move to checkout only when everything feels right.', 'laura-floris'); ?></p>
-    </div>
-
     <div class="laura-cart-page__layout">
         <div class="laura-cart-page__main">
             <?php if (WC()->cart && WC()->cart->is_empty()) : ?>
@@ -161,18 +152,6 @@ $highlights = function_exists('laura_floris_get_shop_highlights') ? laura_floris
                 </form>
 
                 <aside class="laura-cart-page__sidebar">
-                    <?php if (!empty($highlights)) : ?>
-                        <div class="laura-cart-notes">
-                            <p class="laura-cart-notes__eyebrow"><?php esc_html_e('Why this flow works', 'laura-floris'); ?></p>
-                            <?php foreach ($highlights as $highlight) : ?>
-                                <div class="laura-cart-notes__item">
-                                    <h3><?php echo esc_html($highlight['label']); ?></h3>
-                                    <p><?php echo esc_html($highlight['value']); ?></p>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    <?php endif; ?>
-
                     <div class="laura-cart-totals">
                         <div class="laura-cart-totals__header">
                             <p class="laura-cart-totals__eyebrow"><?php esc_html_e('Order summary', 'laura-floris'); ?></p>

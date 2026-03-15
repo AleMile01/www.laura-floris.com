@@ -19,23 +19,6 @@ $cart_url = function_exists('laura_floris_get_cart_page_url') ? laura_floris_get
 ?>
 
 <section class="laura-checkout-page">
-    <div class="laura-checkout-page__intro">
-        <div>
-            <p class="laura-checkout-page__eyebrow"><?php esc_html_e('Secure checkout', 'laura-floris'); ?></p>
-            <h2 class="laura-checkout-page__title"><?php esc_html_e('Complete your order in one calm, integrated flow.', 'laura-floris'); ?></h2>
-        </div>
-        <div class="laura-checkout-page__actions">
-            <a href="<?php echo esc_url($cart_url); ?>" class="laura-checkout-page__link laura-checkout-page__link--secondary"><?php esc_html_e('Back to cart', 'laura-floris'); ?></a>
-            <a href="<?php echo esc_url($shop_url); ?>" class="laura-checkout-page__link"><?php esc_html_e('Keep browsing', 'laura-floris'); ?></a>
-        </div>
-    </div>
-
-    <div class="laura-checkout-steps" aria-label="<?php esc_attr_e('Checkout steps', 'laura-floris'); ?>">
-        <span class="is-active"><?php esc_html_e('1. Details', 'laura-floris'); ?></span>
-        <span class="is-active"><?php esc_html_e('2. Delivery', 'laura-floris'); ?></span>
-        <span class="is-active"><?php esc_html_e('3. Payment', 'laura-floris'); ?></span>
-    </div>
-
     <form name="checkout" method="post" class="checkout woocommerce-checkout laura-checkout-form" action="<?php echo esc_url(wc_get_checkout_url()); ?>" enctype="multipart/form-data" aria-label="<?php esc_attr_e('Checkout', 'woocommerce'); ?>">
         <div class="laura-checkout-form__main">
             <?php if ($checkout->get_checkout_fields()) : ?>

@@ -46,14 +46,14 @@ function laura_floris_enqueue_assets() {
         'laura-floris-style',
         get_stylesheet_uri(),
         array(),
-        '1.5'
+        '4.2'
     );
 
     wp_enqueue_script(
         'laura-floris-theme-js',
         get_template_directory_uri() . '/assets/theme.js',
         array(),
-        '1.5',
+        '4.2',
         true
     );
 
@@ -120,15 +120,38 @@ function laura_floris_get_cart_subtotal() {
 }
 
 function laura_floris_get_shop_url() {
+    $home_url = untrailingslashit(home_url('/'));
+    $default_shop_url = home_url('/shop/');
+
+    if (function_exists('wc_get_page_id')) {
+        $shop_page_id = (int) wc_get_page_id('shop');
+
+        if ($shop_page_id > 0) {
+            $shop_page_url = get_permalink($shop_page_id);
+
+            if ($shop_page_url && untrailingslashit($shop_page_url) !== $home_url) {
+                return $shop_page_url;
+            }
+        }
+    }
+
     if (function_exists('wc_get_page_permalink')) {
         $shop_url = wc_get_page_permalink('shop');
 
-        if ($shop_url) {
+        if ($shop_url && untrailingslashit($shop_url) !== $home_url) {
             return $shop_url;
         }
     }
 
-    return home_url('/shop/');
+    if (function_exists('get_post_type_archive_link')) {
+        $archive_url = get_post_type_archive_link('product');
+
+        if ($archive_url && untrailingslashit($archive_url) !== $home_url) {
+            return $archive_url;
+        }
+    }
+
+    return $default_shop_url;
 }
 
 function laura_floris_get_cart_page_url() {
@@ -315,7 +338,7 @@ function laura_floris_menu_fallback() {
     echo '<a href="' . esc_url(laura_floris_get_projects_url()) . '" class="transition hover:opacity-60">Projects</a>';
     echo '<a href="' . esc_url(home_url('/artworks')) . '" class="transition hover:opacity-60">Artworks</a>';
     echo '<a href="' . esc_url(home_url('/about')) . '" class="notranslate transition hover:opacity-60" translate="no">About</a>';
-    echo '<a href="' . esc_url(home_url('/shop')) . '" class="transition hover:opacity-60">Shop</a>';
+    echo '<a href="' . esc_url(laura_floris_get_shop_url()) . '" class="transition hover:opacity-60">Shop</a>';
     echo '</nav>';
 }
 
@@ -325,7 +348,7 @@ function laura_floris_mobile_menu_fallback() {
     echo '<a href="' . esc_url(laura_floris_get_projects_url()) . '" class="transition hover:opacity-60">Projects</a>';
     echo '<a href="' . esc_url(home_url('/artworks')) . '" class="transition hover:opacity-60">Artworks</a>';
     echo '<a href="' . esc_url(home_url('/about')) . '" class="notranslate transition hover:opacity-60" translate="no">About</a>';
-    echo '<a href="' . esc_url(home_url('/shop')) . '" class="transition hover:opacity-60">Shop</a>';
+    echo '<a href="' . esc_url(laura_floris_get_shop_url()) . '" class="transition hover:opacity-60">Shop</a>';
     echo '</nav>';
 }
 

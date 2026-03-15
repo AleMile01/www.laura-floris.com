@@ -9,9 +9,6 @@ $artwork_groups = laura_floris_get_artwork_groups();
         <div class="mb-8 text-center">
             <p class="mb-3 text-sm text-neutral-500">Artworks</p>
             <h1 class="text-4xl font-black md:text-5xl">Collections</h1>
-            <p class="mx-auto mt-4 max-w-2xl text-base leading-8 text-neutral-600">
-                Browse the artworks by collection and open each selection to explore the pieces inside.
-            </p>
         </div>
 
         <div class="artwork-collections-grid grid grid-cols-3 items-start gap-3 md:gap-6">

@@ -12,25 +12,50 @@ if (!defined('ABSPATH')) {
 </head>
 <body <?php body_class('min-h-screen bg-white text-neutral-900'); ?>>
 <?php wp_body_open(); ?>
+<?php
+$hide_header_logo = false;
 
-<header id="site-header" class="fixed inset-x-0 top-0 z-50 hidden border-b border-neutral-200 bg-white/90 backdrop-blur transition-transform duration-300 md:block">
-    <div class="mx-auto relative flex max-w-7xl items-center justify-between px-6 py-5 md:px-10">
-        <a href="<?php echo esc_url(home_url('/')); ?>" id="navbar-logo" class="pointer-events-none text-sm font-black uppercase tracking-[0.35em] opacity-0 transition-all duration-300 md:text-base" aria-hidden="true">
-            <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/logo.webp'); ?>" class="h-10" alt="<?php bloginfo('name'); ?>">
-        </a>
+if (function_exists('is_shop') && is_shop()) {
+    $hide_header_logo = true;
+}
+
+if (function_exists('is_cart') && is_cart()) {
+    $hide_header_logo = true;
+}
+
+if (function_exists('is_checkout') && is_checkout()) {
+    $hide_header_logo = true;
+}
+
+if (function_exists('is_product') && is_product()) {
+    $hide_header_logo = true;
+}
+
+$show_header_logo = !$hide_header_logo;
+?>
+
+<header id="site-header" class="laura-site-header fixed inset-x-0 top-0 z-50 hidden transition-transform duration-300 md:block">
+    <div class="laura-site-header__inner mx-auto max-w-7xl px-6 py-4 md:px-10">
+        <?php if ($show_header_logo) : ?>
+            <a href="<?php echo esc_url(home_url('/')); ?>" id="navbar-logo" class="laura-site-header__brand pointer-events-none text-sm font-black uppercase tracking-[0.35em] opacity-0 transition-all duration-300 md:text-base" aria-hidden="true">
+                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/logo.webp'); ?>" class="h-9" alt="<?php bloginfo('name'); ?>">
+            </a>
+        <?php else : ?>
+            <div class="laura-site-header__brand-spacer" aria-hidden="true"></div>
+        <?php endif; ?>
 
         <?php
         wp_nav_menu(array(
             'theme_location' => 'primary',
             'container'      => 'nav',
-            'container_class'=> 'main-navigation absolute left-1/2 hidden -translate-x-1/2 md:block',
-            'menu_class'     => 'flex gap-8 text-sm font-medium uppercase tracking-[0.2em]',
+            'container_class'=> 'main-navigation hidden md:block',
+            'menu_class'     => 'flex gap-8 text-sm font-medium uppercase tracking-[0.18em]',
             'fallback_cb'    => 'laura_floris_menu_fallback',
         ));
         ?>
 
         <?php if (laura_floris_is_woocommerce_available()) : ?>
-            <div class="ml-auto hidden md:block">
+            <div class="laura-site-header__actions hidden md:block">
                 <?php echo laura_floris_get_cart_button_markup('laura-cart-button laura-cart-button--desktop'); ?>
             </div>
         <?php endif; ?>
@@ -38,37 +63,20 @@ if (!defined('ABSPATH')) {
 </header>
 
 <?php if (laura_floris_is_woocommerce_available()) : ?>
-    <button type="button" class="laura-cart-button laura-cart-button--mobile md:hidden" data-cart-toggle aria-controls="laura-cart-drawer" aria-expanded="false">
-        <span class="laura-cart-button__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-                <path d="M4 5.5H6.2L7.7 15.2C7.85 16.17 8.69 16.88 9.67 16.88H17.75C18.68 16.88 19.49 16.25 19.72 15.35L21 10.25H8.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
-                <circle cx="10.25" cy="19" r="1.35" fill="currentColor"></circle>
-                <circle cx="17.2" cy="19" r="1.35" fill="currentColor"></circle>
-            </svg>
-        </span>
-        <span class="js-laura-cart-count laura-cart-button__count"><?php echo esc_html(laura_floris_get_cart_count()); ?></span>
-    </button>
+    <?php echo laura_floris_get_cart_button_markup('laura-cart-button laura-cart-button--mobile md:hidden'); ?>
 <?php endif; ?>
 
 <button id="menu-toggle" type="button" class="laura-mobile-toggle fixed right-4 top-4 z-[70] inline-flex h-14 w-14 items-center justify-center rounded-full border border-neutral-200 bg-white/95 text-neutral-900 shadow-lg transition hover:bg-neutral-900 hover:text-white md:hidden" aria-controls="mobile-menu" aria-expanded="false" aria-label="Apri il menu">
     <span class="sr-only">Apri il menu</span>
-    <span class="flex h-5 w-5 flex-col items-center justify-between">
-        <span class="block h-0.5 w-5 bg-current transition-transform duration-300"></span>
-        <span class="block h-0.5 w-5 bg-current transition-opacity duration-300"></span>
-        <span class="block h-0.5 w-5 bg-current transition-transform duration-300"></span>
+    <span class="laura-mobile-toggle__bars" aria-hidden="true">
+        <span class="laura-mobile-toggle__bar"></span>
+        <span class="laura-mobile-toggle__bar"></span>
+        <span class="laura-mobile-toggle__bar"></span>
     </span>
 </button>
 
 <div id="mobile-menu-overlay" class="pointer-events-none fixed inset-0 z-[55] bg-black/0 opacity-0 transition duration-300 md:hidden"></div>
 <aside id="mobile-menu" class="pointer-events-none fixed right-0 top-0 z-[60] flex h-screen w-[min(22rem,88vw)] translate-x-full flex-col bg-white px-6 pb-8 pt-24 shadow-2xl transition-transform duration-300 md:hidden" aria-hidden="true">
-    <?php if (laura_floris_is_woocommerce_available()) : ?>
-        <div class="mb-8 border-b border-neutral-200 pb-6">
-            <a href="<?php echo esc_url(wc_get_cart_url()); ?>" class="inline-flex items-center gap-3 rounded-full border border-neutral-200 px-4 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-neutral-900 transition hover:border-neutral-900 hover:bg-neutral-900 hover:text-white">
-                <span>Cart</span>
-                <span class="js-laura-cart-count inline-flex min-w-8 items-center justify-center rounded-full bg-neutral-900 px-2 py-1 text-xs text-white"><?php echo esc_html(laura_floris_get_cart_count()); ?></span>
-            </a>
-        </div>
-    <?php endif; ?>
     <?php
     wp_nav_menu(array(
         'theme_location' => 'primary',

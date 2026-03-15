@@ -18,8 +18,8 @@ $artwork_groups = laura_floris_get_artwork_groups();
 
         <div class="artwork-collections-grid grid grid-cols-1 items-start gap-4 md:grid-cols-3 md:gap-6">
             <?php foreach ($artwork_groups as $slug => $group) : ?>
-                <a href="<?php echo esc_url(laura_floris_get_artwork_group_url($slug)); ?>" class="group overflow-hidden rounded-3xl bg-neutral-100 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-                    <div class="aspect-[4/5] overflow-hidden">
+                <a href="<?php echo esc_url(laura_floris_get_artwork_group_url($slug)); ?>" class="artwork-collections-card group overflow-hidden rounded-3xl bg-neutral-100 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+                    <div class="artwork-collections-card__media aspect-[4/4.35] overflow-hidden md:aspect-[4/4.45]">
                         <img
                             src="<?php echo esc_url($group['cover']); ?>"
                             alt="<?php echo esc_attr($group['title']); ?>"
@@ -27,10 +27,9 @@ $artwork_groups = laura_floris_get_artwork_groups();
                         >
                     </div>
 
-                    <div class="p-3 text-center md:p-6">
+                    <div class="artwork-collections-card__content p-3 text-center md:p-4">
                         <h2 class="text-xs font-semibold uppercase leading-tight md:text-lg"><?php echo esc_html($group['title']); ?></h2>
-                        <p class="mt-2 hidden text-sm leading-7 text-neutral-600 md:block"><?php echo esc_html($group['description']); ?></p>
-                        <span class="mt-3 inline-flex text-[10px] uppercase tracking-[0.18em] text-neutral-500 md:mt-5 md:text-xs md:tracking-[0.2em]">View collection</span>
+                        <span class="mt-2 inline-flex text-[10px] uppercase tracking-[0.18em] text-neutral-500 md:mt-3 md:text-xs md:tracking-[0.2em]">View collection</span>
                     </div>
                 </a>
             <?php endforeach; ?>
