@@ -193,10 +193,16 @@ function laura_floris_get_cart_button_markup($classes = '') {
     }
 
     $count = laura_floris_get_cart_count();
+    $count_classes = 'js-laura-cart-count laura-cart-button__count';
+
+    if ($count <= 0) {
+        $count_classes .= ' is-empty';
+    }
 
     return sprintf(
-        '<button type="button" class="%1$s" data-cart-toggle aria-controls="laura-cart-drawer" aria-expanded="false"><span class="laura-cart-button__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5H6.2L7.7 15.2C7.85 16.17 8.69 16.88 9.67 16.88H17.75C18.68 16.88 19.49 16.25 19.72 15.35L21 10.25H8.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="10.25" cy="19" r="1.35" fill="currentColor"></circle><circle cx="17.2" cy="19" r="1.35" fill="currentColor"></circle></svg></span><span class="js-laura-cart-count laura-cart-button__count">%2$d</span></button>',
+        '<button type="button" class="%1$s" data-cart-toggle aria-controls="laura-cart-drawer" aria-expanded="false"><span class="laura-cart-button__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5H6.2L7.7 15.2C7.85 16.17 8.69 16.88 9.67 16.88H17.75C18.68 16.88 19.49 16.25 19.72 15.35L21 10.25H8.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="10.25" cy="19" r="1.35" fill="currentColor"></circle><circle cx="17.2" cy="19" r="1.35" fill="currentColor"></circle></svg></span><span class="%2$s">%3$d</span></button>',
         esc_attr(trim($classes)),
+        esc_attr($count_classes),
         $count
     );
 }
@@ -223,7 +229,54 @@ function laura_floris_render_mini_cart_contents() {
 
         <?php if ($count > 0) : ?>
             <div class="laura-mini-cart__list">
-                <?php woocommerce_mini_cart(); ?>
+                <ul class="woocommerce-mini-cart">
+                    <?php foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) : ?>
+                        <?php
+                        $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
+                        $product_id = apply_filters('woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key);
+
+                        if (!$_product || !$_product->exists() || $cart_item['quantity'] <= 0 || !apply_filters('woocommerce_widget_cart_item_visible', true, $cart_item, $cart_item_key)) {
+                            continue;
+                        }
+
+                        $product_name = apply_filters('woocommerce_cart_item_name', $_product->get_name(), $cart_item, $cart_item_key);
+                        $thumbnail = apply_filters('woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key);
+                        $product_price = apply_filters('woocommerce_cart_item_price', WC()->cart->get_product_price($_product), $cart_item, $cart_item_key);
+                        $product_permalink = apply_filters('woocommerce_cart_item_permalink', $_product->is_visible() ? $_product->get_permalink($cart_item) : '', $cart_item, $cart_item_key);
+                        ?>
+                        <li class="woocommerce-mini-cart-item mini_cart_item">
+                            <?php
+                            echo apply_filters(
+                                'woocommerce_cart_item_remove_link',
+                                sprintf(
+                                    '<a href="%1$s" class="remove remove_from_cart_button" aria-label="%2$s" data-product_id="%3$s" data-cart_item_key="%4$s" data-product_sku="%5$s">&times;</a>',
+                                    esc_url(wc_get_cart_remove_url($cart_item_key)),
+                                    esc_attr(sprintf(__('Remove %s from cart', 'woocommerce'), wp_strip_all_tags($product_name))),
+                                    esc_attr($product_id),
+                                    esc_attr($cart_item_key),
+                                    esc_attr($_product->get_sku())
+                                ),
+                                $cart_item_key
+                            );
+                            ?>
+                            <div class="laura-mini-cart__item-media">
+                                <?php if ($product_permalink) : ?>
+                                    <a href="<?php echo esc_url($product_permalink); ?>"><?php echo $thumbnail; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a>
+                                <?php else : ?>
+                                    <?php echo $thumbnail; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                                <?php endif; ?>
+                            </div>
+                            <div class="laura-mini-cart__item-content">
+                                <?php if ($product_permalink) : ?>
+                                    <a href="<?php echo esc_url($product_permalink); ?>" class="laura-mini-cart__item-title"><?php echo wp_kses_post($product_name); ?></a>
+                                <?php else : ?>
+                                    <span class="laura-mini-cart__item-title"><?php echo wp_kses_post($product_name); ?></span>
+                                <?php endif; ?>
+                                <span class="laura-mini-cart__item-quantity"><?php echo esc_html($cart_item['quantity']); ?> x <?php echo wp_kses_post($product_price); ?></span>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
             </div>
             <div class="laura-mini-cart__footer">
                 <p class="laura-mini-cart__subtotal">
@@ -250,9 +303,11 @@ function laura_floris_add_to_cart_fragments($fragments) {
         return $fragments;
     }
 
+    $cart_count = laura_floris_get_cart_count();
+
     ob_start();
     ?>
-    <span class="js-laura-cart-count laura-cart-button__count"><?php echo esc_html(laura_floris_get_cart_count()); ?></span>
+    <span class="js-laura-cart-count laura-cart-button__count<?php echo $cart_count <= 0 ? ' is-empty' : ''; ?>"><?php echo esc_html($cart_count); ?></span>
     <?php
     $fragments['.laura-cart-button .js-laura-cart-count'] = ob_get_clean();
 
@@ -273,6 +328,17 @@ function laura_floris_products_per_page($per_page) {
     return 9;
 }
 add_filter('loop_shop_per_page', 'laura_floris_products_per_page', 20);
+
+function laura_floris_render_show_more_link() {
+    global $product;
+
+    if (!is_a($product, 'WC_Product')) {
+        return;
+    }
+
+    echo '<a href="' . esc_url(get_permalink($product->get_id())) . '" class="button laura-product-show-more">' . esc_html__('Show more', 'laura-floris') . '</a>';
+}
+add_action('woocommerce_after_shop_loop_item', 'laura_floris_render_show_more_link', 5);
 
 function laura_floris_shop_toolbar_open() {
     if (!function_exists('is_shop') || (!is_shop() && !is_product_taxonomy())) {
@@ -744,3 +810,20 @@ function laura_floris_collaboration_title_parts($title) {
     return $title;
 }
 add_filter('document_title_parts', 'laura_floris_collaboration_title_parts');
+
+function laura_floris_customize_woocommerce_toggle_text($translated_text, $text, $domain) {
+    if ($domain !== 'woocommerce') {
+        return $translated_text;
+    }
+
+    if ($text === 'Click here to login') {
+        return __('Accedi', 'laura-floris');
+    }
+
+    if ($text === 'Click here to enter your code') {
+        return __('Inserisci codice promozionale', 'laura-floris');
+    }
+
+    return $translated_text;
+}
+add_filter('gettext', 'laura_floris_customize_woocommerce_toggle_text', 10, 3);

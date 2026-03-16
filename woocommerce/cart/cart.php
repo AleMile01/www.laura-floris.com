@@ -55,7 +55,7 @@ $checkout_url = function_exists('laura_floris_get_checkout_page_url') ? laura_fl
                                 <div class="laura-cart-card__content">
                                     <div class="laura-cart-card__header">
                                         <div>
-                                            <p class="laura-cart-card__label"><?php esc_html_e('Selected work', 'laura-floris'); ?></p>
+                                            <p class="laura-cart-card__label"><?php esc_html_e('Artwork', 'laura-floris'); ?></p>
                                             <h3 class="laura-cart-card__name">
                                                 <?php
                                                 if ($product_permalink) {
@@ -65,22 +65,6 @@ $checkout_url = function_exists('laura_floris_get_checkout_page_url') ? laura_fl
                                                 }
                                                 ?>
                                             </h3>
-                                        </div>
-                                        <div class="laura-cart-card__remove">
-                                            <?php
-                                            echo apply_filters(
-                                                'woocommerce_cart_item_remove_link',
-                                                sprintf(
-                                                    '<a href="%1$s" class="remove" aria-label="%2$s" data-product_id="%3$s" data-product_sku="%4$s">%5$s</a>',
-                                                    esc_url(wc_get_cart_remove_url($cart_item_key)),
-                                                    esc_attr(sprintf(__('Remove %s from cart', 'woocommerce'), wp_strip_all_tags($_product->get_name()))),
-                                                    esc_attr($product_id),
-                                                    esc_attr($_product->get_sku()),
-                                                    esc_html__('Remove', 'laura-floris')
-                                                ),
-                                                $cart_item_key
-                                            );
-                                            ?>
                                         </div>
                                     </div>
 
@@ -92,36 +76,58 @@ $checkout_url = function_exists('laura_floris_get_checkout_page_url') ? laura_fl
                                     </div>
 
                                     <div class="laura-cart-card__footer">
-                                        <div class="laura-cart-card__price">
-                                            <span><?php esc_html_e('Unit price', 'laura-floris'); ?></span>
-                                            <strong><?php echo wp_kses_post(WC()->cart->get_product_price($_product)); ?></strong>
-                                        </div>
-                                        <div class="laura-cart-card__quantity">
-                                            <label for="quantity_<?php echo esc_attr($cart_item_key); ?>"><?php esc_html_e('Quantity', 'laura-floris'); ?></label>
-                                            <?php
-                                            if ($_product->is_sold_individually()) {
-                                                $product_quantity = sprintf('1 <input type="hidden" name="cart[%s][qty]" value="1" />', $cart_item_key);
-                                            } else {
-                                                $product_quantity = woocommerce_quantity_input(
-                                                    array(
-                                                        'input_name'   => "cart[{$cart_item_key}][qty]",
-                                                        'input_value'  => $cart_item['quantity'],
-                                                        'max_value'    => $_product->get_max_purchase_quantity(),
-                                                        'min_value'    => '0',
-                                                        'product_name' => $_product->get_name(),
-                                                        'input_id'     => 'quantity_' . $cart_item_key,
-                                                    ),
-                                                    $_product,
-                                                    false
-                                                );
-                                            }
+                                        <div class="laura-cart-card__details">
+                                            <div class="laura-cart-card__price">
+                                                <span><?php esc_html_e('Unit price', 'laura-floris'); ?></span>
+                                                <strong><?php echo wp_kses_post(WC()->cart->get_product_price($_product)); ?></strong>
+                                            </div>
+                                            <div class="laura-cart-card__quantity">
+                                                <label for="quantity_<?php echo esc_attr($cart_item_key); ?>"><?php esc_html_e('Quantity', 'laura-floris'); ?></label>
+                                                <?php
+                                                if ($_product->is_sold_individually()) {
+                                                    $product_quantity = sprintf('1 <input type="hidden" name="cart[%s][qty]" value="1" />', $cart_item_key);
+                                                } else {
+                                                    $product_quantity = woocommerce_quantity_input(
+                                                        array(
+                                                            'input_name'   => "cart[{$cart_item_key}][qty]",
+                                                            'input_value'  => $cart_item['quantity'],
+                                                            'max_value'    => $_product->get_max_purchase_quantity(),
+                                                            'min_value'    => '0',
+                                                            'product_name' => $_product->get_name(),
+                                                            'input_id'     => 'quantity_' . $cart_item_key,
+                                                        ),
+                                                        $_product,
+                                                        false
+                                                    );
+                                                }
 
-                                            echo apply_filters('woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                                            ?>
+                                                echo apply_filters('woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                                                ?>
+                                            </div>
+                                            <div class="laura-cart-card__subtotal">
+                                                <span><?php esc_html_e('Subtotal', 'laura-floris'); ?></span>
+                                                <strong><?php echo wp_kses_post(apply_filters('woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal($_product, $cart_item['quantity']), $cart_item, $cart_item_key)); ?></strong>
+                                            </div>
                                         </div>
-                                        <div class="laura-cart-card__subtotal">
-                                            <span><?php esc_html_e('Subtotal', 'laura-floris'); ?></span>
-                                            <strong><?php echo wp_kses_post(apply_filters('woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal($_product, $cart_item['quantity']), $cart_item, $cart_item_key)); ?></strong>
+                                    </div>
+
+                                    <div class="laura-cart-card__actions">
+                                        <button type="submit" class="button" name="update_cart" value="<?php esc_attr_e('Update cart', 'woocommerce'); ?>"><?php esc_html_e('Update cart', 'woocommerce'); ?></button>
+                                        <div class="laura-cart-card__remove">
+                                            <?php
+                                            echo apply_filters(
+                                                'woocommerce_cart_item_remove_link',
+                                                sprintf(
+                                                    '<a href="%1$s" class="remove" aria-label="%2$s" data-product_id="%3$s" data-product_sku="%4$s"><span class="laura-cart-card__remove-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M9 4.75H15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M5.75 7.25H18.25" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M8 7.25V17.25C8 18.2165 8.7835 19 9.75 19H14.25C15.2165 19 16 18.2165 16 17.25V7.25" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.5 10.25V15.25" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M13.5 10.25V15.25" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span><span>%5$s</span></a>',
+                                                    esc_url(wc_get_cart_remove_url($cart_item_key)),
+                                                    esc_attr(sprintf(__('Remove %s from cart', 'woocommerce'), wp_strip_all_tags($_product->get_name()))),
+                                                    esc_attr($product_id),
+                                                    esc_attr($_product->get_sku()),
+                                                    esc_html__('Remove', 'laura-floris')
+                                                ),
+                                                $cart_item_key
+                                            );
+                                            ?>
                                         </div>
                                     </div>
                                 </div>
@@ -138,11 +144,6 @@ $checkout_url = function_exists('laura_floris_get_checkout_page_url') ? laura_fl
                                 <?php do_action('woocommerce_cart_coupon'); ?>
                             </div>
                         <?php endif; ?>
-
-                        <div class="laura-cart-form__buttons">
-                            <a class="laura-cart-form__continue" href="<?php echo esc_url($shop_url); ?>"><?php esc_html_e('Continue shopping', 'laura-floris'); ?></a>
-                            <button type="submit" class="button" name="update_cart" value="<?php esc_attr_e('Update cart', 'woocommerce'); ?>"><?php esc_html_e('Update cart', 'woocommerce'); ?></button>
-                        </div>
 
                         <?php do_action('woocommerce_cart_actions'); ?>
                         <?php wp_nonce_field('woocommerce-cart', 'woocommerce-cart-nonce'); ?>
