@@ -94,20 +94,23 @@ $show_header_logo = !$hide_header_logo;
 </button>
 
 <div id="contact-fab" class="contact-fab fixed bottom-6 left-6 z-[66] flex flex-col items-start gap-3">
-    <a href="https://www.instagram.com/laurafloris" target="_blank" rel="noreferrer" class="contact-fab__action" aria-label="Instagram">
+    <a href="https://www.instagram.com/laurafloris" target="_blank" rel="noopener noreferrer" class="contact-fab__action" aria-label="Open Laura Floris Instagram profile">
+        <span class="sr-only">Open Laura Floris Instagram profile</span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.8"></rect>
             <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"></circle>
             <circle cx="17.5" cy="6.5" r="1" fill="currentColor"></circle>
         </svg>
     </a>
-    <a href="mailto:laflorisart@gmail.com" class="contact-fab__action" aria-label="Email">
+    <a href="mailto:laflorisart@gmail.com" class="contact-fab__action" aria-label="Send an email to Laura Floris">
+        <span class="sr-only">Send an email to Laura Floris</span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="1.8"></rect>
             <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></polyline>
         </svg>
     </a>
     <button id="contact-fab-toggle" type="button" class="contact-fab__toggle" aria-expanded="false" aria-controls="contact-fab" aria-label="Open contact options">
+        <span class="sr-only">Open contact options</span>
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M5 7.75C5 6.78 5.78 6 6.75 6H17.25C18.22 6 19 6.78 19 7.75V14.25C19 15.22 18.22 16 17.25 16H10.5L7.2 18.55C6.62 18.99 5.8 18.58 5.8 17.86V16C5.34 15.72 5 15.03 5 14.25V7.75Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
             <path d="M8 10.5H16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>

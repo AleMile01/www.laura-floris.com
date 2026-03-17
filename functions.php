@@ -194,16 +194,22 @@ function laura_floris_get_cart_button_markup($classes = '') {
 
     $count = laura_floris_get_cart_count();
     $count_classes = 'js-laura-cart-count laura-cart-button__count';
+    $cart_label = sprintf(
+        /* translators: %d is the number of items currently in the cart. */
+        _n('Open cart, %d item', 'Open cart, %d items', $count, 'laura-floris'),
+        $count
+    );
 
     if ($count <= 0) {
         $count_classes .= ' is-empty';
     }
 
     return sprintf(
-        '<button type="button" class="%1$s" data-cart-toggle aria-controls="laura-cart-drawer" aria-expanded="false"><span class="laura-cart-button__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5H6.2L7.7 15.2C7.85 16.17 8.69 16.88 9.67 16.88H17.75C18.68 16.88 19.49 16.25 19.72 15.35L21 10.25H8.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="10.25" cy="19" r="1.35" fill="currentColor"></circle><circle cx="17.2" cy="19" r="1.35" fill="currentColor"></circle></svg></span><span class="%2$s">%3$d</span></button>',
+        '<button type="button" class="%1$s" data-cart-toggle aria-controls="laura-cart-drawer" aria-expanded="false" aria-label="%4$s"><span class="sr-only">%4$s</span><span class="laura-cart-button__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5H6.2L7.7 15.2C7.85 16.17 8.69 16.88 9.67 16.88H17.75C18.68 16.88 19.49 16.25 19.72 15.35L21 10.25H8.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="10.25" cy="19" r="1.35" fill="currentColor"></circle><circle cx="17.2" cy="19" r="1.35" fill="currentColor"></circle></svg></span><span class="%2$s" aria-hidden="true">%3$d</span></button>',
         esc_attr(trim($classes)),
         esc_attr($count_classes),
-        $count
+        $count,
+        esc_attr($cart_label)
     );
 }
 
@@ -397,6 +403,168 @@ function laura_floris_render_meta_description() {
     echo '<meta name="description" content="' . esc_attr($description) . '">' . "\n";
 }
 add_action('wp_head', 'laura_floris_render_meta_description', 1);
+
+function laura_floris_get_canonical_url() {
+    if (get_query_var('laura_projects_page')) {
+        return laura_floris_get_projects_url();
+    }
+
+    $collaboration_slug = get_query_var('laura_collaboration');
+    if ($collaboration_slug && laura_floris_get_collaboration($collaboration_slug)) {
+        return laura_floris_get_collaboration_url($collaboration_slug);
+    }
+
+    $artwork_group_slug = get_query_var('laura_artwork_collection');
+    if ($artwork_group_slug && laura_floris_get_artwork_group($artwork_group_slug)) {
+        return laura_floris_get_artwork_group_url($artwork_group_slug);
+    }
+
+    if (is_singular()) {
+        $permalink = get_permalink();
+        if ($permalink) {
+            return $permalink;
+        }
+    }
+
+    if (is_post_type_archive()) {
+        $archive_link = get_post_type_archive_link(get_post_type());
+        if ($archive_link) {
+            return $archive_link;
+        }
+    }
+
+    if (function_exists('is_shop') && is_shop()) {
+        return laura_floris_get_shop_url();
+    }
+
+    if (is_home()) {
+        return home_url('/');
+    }
+
+    global $wp;
+
+    if (!isset($wp->request)) {
+        return home_url('/');
+    }
+
+    return home_url(user_trailingslashit($wp->request));
+}
+
+function laura_floris_render_canonical_link() {
+    if (is_404()) {
+        return;
+    }
+
+    $canonical_url = laura_floris_get_canonical_url();
+
+    if (!$canonical_url) {
+        return;
+    }
+
+    echo '<link rel="canonical" href="' . esc_url($canonical_url) . '">' . "\n";
+}
+add_action('wp_head', 'laura_floris_render_canonical_link', 2);
+
+function laura_floris_filter_wp_robots($robots) {
+    if ('0' === get_option('blog_public')) {
+        return $robots;
+    }
+
+    if (is_404()) {
+        $robots['noindex'] = true;
+        return $robots;
+    }
+
+    if (
+        !get_query_var('laura_projects_page')
+        && !get_query_var('laura_collaboration')
+        && !get_query_var('laura_artwork_collection')
+    ) {
+        return $robots;
+    }
+
+    $robots['index'] = true;
+    $robots['follow'] = true;
+    $robots['max-image-preview'] = 'large';
+
+    unset($robots['noindex'], $robots['nofollow']);
+
+    return $robots;
+}
+add_filter('wp_robots', 'laura_floris_filter_wp_robots');
+
+function laura_floris_get_virtual_sitemap_entries() {
+    $lastmod = gmdate('c', max(array_filter(array(
+        @filemtime(get_template_directory() . '/functions.php'),
+        @filemtime(get_template_directory() . '/page-projects.php'),
+        @filemtime(get_template_directory() . '/page-collaboration.php'),
+        @filemtime(get_template_directory() . '/page-artwork-collection.php'),
+        @filemtime(get_template_directory() . '/page-artworks.php'),
+    ))));
+
+    $entries = array(
+        array(
+            'loc'     => laura_floris_get_projects_url(),
+            'lastmod' => $lastmod,
+        ),
+    );
+
+    foreach (laura_floris_get_collaborations() as $slug => $collaboration) {
+        $entries[] = array(
+            'loc'     => laura_floris_get_collaboration_url($slug),
+            'lastmod' => $lastmod,
+        );
+    }
+
+    foreach (laura_floris_get_artwork_groups() as $slug => $group) {
+        $entries[] = array(
+            'loc'     => laura_floris_get_artwork_group_url($slug),
+            'lastmod' => $lastmod,
+        );
+    }
+
+    return $entries;
+}
+
+if (class_exists('WP_Sitemaps_Provider')) {
+    class Laura_Floris_Virtual_Pages_Sitemaps_Provider extends WP_Sitemaps_Provider {
+        public function __construct() {
+            $this->name        = 'laura-virtual-pages';
+            $this->object_type = 'laura-virtual-pages';
+        }
+
+        public function get_object_subtypes() {
+            return array();
+        }
+
+        public function get_url_list($page_num, $object_subtype = '') {
+            if ((int) $page_num !== 1) {
+                return array();
+            }
+
+            return laura_floris_get_virtual_sitemap_entries();
+        }
+
+        public function get_max_num_pages($object_subtype = '') {
+            return 1;
+        }
+    }
+}
+
+function laura_floris_register_virtual_sitemap_provider() {
+    if (!function_exists('wp_sitemaps_get_server') || !class_exists('WP_Sitemaps_Provider')) {
+        return;
+    }
+
+    $server = wp_sitemaps_get_server();
+
+    if (!isset($server->registry)) {
+        return;
+    }
+
+    $server->registry->add_provider('laura-virtual-pages', new Laura_Floris_Virtual_Pages_Sitemaps_Provider());
+}
+add_action('init', 'laura_floris_register_virtual_sitemap_provider', 100);
 
 function laura_floris_menu_fallback() {
     echo '<nav class="main-navigation hidden gap-8 text-sm font-medium uppercase tracking-[0.2em] md:flex">';

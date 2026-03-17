@@ -230,6 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     contactFab.classList.remove('is-open');
     contactFabToggle.setAttribute('aria-expanded', 'false');
+    contactFabToggle.setAttribute('aria-label', 'Open contact options');
   }
 
   function openContactFab() {
@@ -237,6 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     contactFab.classList.add('is-open');
     contactFabToggle.setAttribute('aria-expanded', 'true');
+    contactFabToggle.setAttribute('aria-label', 'Close contact options');
   }
 
   if (contactFab && contactFabToggle) {

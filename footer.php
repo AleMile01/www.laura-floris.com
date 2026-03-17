@@ -19,7 +19,8 @@ if (!defined('ABSPATH')) {
         <div class="mt-6 flex justify-center gap-6">
 
             <!-- Instagram -->
-            <a href="https://www.instagram.com/laurafloris" target="_blank" class="text-neutral-500 transition hover:text-neutral-900">
+            <a href="https://www.instagram.com/laurafloris" target="_blank" rel="noopener noreferrer" class="text-neutral-500 transition hover:text-neutral-900" aria-label="Open Laura Floris Instagram profile">
+                <span class="sr-only">Open Laura Floris Instagram profile</span>
                 <svg xmlns="http://www.w3.org/2000/svg" 
                      width="20" 
                      height="20" 
@@ -36,7 +37,8 @@ if (!defined('ABSPATH')) {
             </a>
 
             <!-- Email -->
-            <a href="mailto:laflorisart@gmail.com" class="text-neutral-500 transition hover:text-neutral-900">
+            <a href="mailto:laflorisart@gmail.com" class="text-neutral-500 transition hover:text-neutral-900" aria-label="Send an email to Laura Floris">
+                <span class="sr-only">Send an email to Laura Floris</span>
                 <svg xmlns="http://www.w3.org/2000/svg" 
                      width="20" 
                      height="20" 

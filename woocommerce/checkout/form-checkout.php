@@ -39,13 +39,16 @@ $cart_url = function_exists('laura_floris_get_cart_page_url') ? laura_floris_get
 
         <aside class="laura-checkout-form__sidebar">
             <div class="laura-checkout-card laura-checkout-card--summary">
+                <?php do_action('woocommerce_checkout_before_order_review_heading'); ?>
                 <div class="laura-checkout-card__header">
                     <p class="laura-checkout-card__eyebrow"><?php esc_html_e('Order review', 'laura-floris'); ?></p>
                     <h3 id="order_review_heading"><?php esc_html_e('Your final summary', 'laura-floris'); ?></h3>
                 </div>
+                <?php do_action('woocommerce_checkout_before_order_review'); ?>
                 <div id="order_review" class="woocommerce-checkout-review-order">
                     <?php do_action('woocommerce_checkout_order_review'); ?>
                 </div>
+                <?php do_action('woocommerce_checkout_after_order_review'); ?>
             </div>
         </aside>
     </form>

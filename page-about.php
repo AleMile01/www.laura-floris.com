@@ -27,7 +27,8 @@ get_header();
                     <p class="mt-2 text-sm text-neutral-600">Digital artist</p>
 
                     <div class="mt-6 flex justify-center gap-4">
-                        <a href="https://www.instagram.com/laurafloris" target="_blank" rel="noreferrer" class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-neutral-900 text-white shadow-lg transition hover:-translate-y-1 hover:bg-neutral-700" aria-label="Instagram">
+                        <a href="https://www.instagram.com/laurafloris" target="_blank" rel="noopener noreferrer" class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-neutral-900 text-white shadow-lg transition hover:-translate-y-1 hover:bg-neutral-700" aria-label="Open Laura Floris Instagram profile">
+                            <span class="sr-only">Open Laura Floris Instagram profile</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="2" y="2" width="20" height="20" rx="5"></rect>
                                 <circle cx="12" cy="12" r="4"></circle>
@@ -35,7 +36,8 @@ get_header();
                             </svg>
                         </a>
 
-                        <a href="mailto:laflorisart@gmail.com" class="inline-flex h-14 w-14 items-center justify-center rounded-full border border-neutral-900 bg-white text-neutral-900 shadow-lg transition hover:-translate-y-1 hover:bg-neutral-900 hover:text-white" aria-label="Email">
+                        <a href="mailto:laflorisart@gmail.com" class="inline-flex h-14 w-14 items-center justify-center rounded-full border border-neutral-900 bg-white text-neutral-900 shadow-lg transition hover:-translate-y-1 hover:bg-neutral-900 hover:text-white" aria-label="Send an email to Laura Floris">
+                            <span class="sr-only">Send an email to Laura Floris</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="2" y="4" width="20" height="16" rx="2"></rect>
                                 <polyline points="22,6 12,13 2,6"></polyline>

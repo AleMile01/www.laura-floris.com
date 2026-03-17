@@ -53,7 +53,7 @@
     <section class="border-t border-neutral-200 px-6 py-16 md:px-10" id="about">
         <div class="mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.15fr_0.85fr] md:items-center">
             <div>
-                <p class="notranslate mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-neutral-500" translate="no">About</p>
+                <p class="notranslate mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-neutral-700" translate="no">About</p>
                 <h2 class="text-3xl font-black uppercase md:text-4xl">Find more about me</h2>
                 <p class="mt-6 max-w-2xl text-base leading-8 text-neutral-600">
                     Hi, I'm Laura Floris. <br>
@@ -66,21 +66,21 @@
                 </p>
             </div>
 
-            <a href="<?php echo esc_url(home_url('/about')); ?>" class="group block w-full max-w-[17rem] justify-self-center overflow-hidden rounded-3xl bg-neutral-100 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl" aria-label="Go to About page">
+            <a href="<?php echo esc_url(home_url('/about')); ?>" class="group block w-full max-w-[17rem] justify-self-center overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-neutral-200 transition duration-300 hover:-translate-y-1 hover:shadow-xl" aria-label="Go to About page">
                 <div class="aspect-[4/5] overflow-hidden">
                     <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/laurafoto.webp'); ?>" alt="Laura Floris" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                 </div>
                 <div class="p-5 text-center">
                     <h3 class="text-base font-semibold">Laura Floris</h3>
                     <p class="mt-2 text-xs text-neutral-600">Digital artist</p>
-                    <span class="mt-5 inline-flex text-xs tracking-[0.1em] text-neutral-500">Show more</span>
+                    <span class="mt-5 inline-flex text-xs font-medium tracking-[0.1em] text-neutral-700">Show more</span>
                 </div>
             </a>
         </div>
     </section>
 
     <section class="border-t border-neutral-200 px-6 py-16 md:px-10" id="shop">
-        <div class="mx-auto max-w-7xl rounded-[2rem] bg-neutral-100 px-8 py-10 md:flex md:items-center md:justify-between md:px-12">
+        <div class="mx-auto max-w-7xl rounded-[2rem] bg-neutral-100 px-8 py-10 ring-1 ring-neutral-200 md:flex md:items-center md:justify-between md:px-12">
             <div class="max-w-2xl">
                 <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-900 shadow-sm">
                     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="h-5 w-5">
@@ -88,7 +88,7 @@
                         <path d="M9 9V7.8C9 6.25 10.12 5 11.5 5H12.5C13.88 5 15 6.25 15 7.8V9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
                     </svg>
                 </div>
-                <p class="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-neutral-500">Shop</p>
+                <p class="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-neutral-700">Shop</p>
                 <h2 class="text-3xl font-black uppercase md:text-4xl">Take a look at my shop</h2>
                 <p class="mt-4 text-base leading-8 text-neutral-600">Discover the shop section with my prints, limited editions and digital works.</p>
             </div>
