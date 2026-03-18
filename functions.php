@@ -34,6 +34,11 @@ function laura_floris_theme_setup() {
 add_action('after_setup_theme', 'laura_floris_theme_setup');
 
 function laura_floris_enqueue_assets() {
+    $theme_version = wp_get_theme()->get('Version');
+    $style_version = file_exists(get_stylesheet_directory() . '/style.css') ? (string) filemtime(get_stylesheet_directory() . '/style.css') : $theme_version;
+    $script_path = get_template_directory() . '/assets/theme.js';
+    $script_version = file_exists($script_path) ? (string) filemtime($script_path) : $theme_version;
+
     wp_enqueue_script(
         'tailwind-cdn',
         'https://cdn.tailwindcss.com',
@@ -46,14 +51,14 @@ function laura_floris_enqueue_assets() {
         'laura-floris-style',
         get_stylesheet_uri(),
         array(),
-        '4.2'
+        $style_version
     );
 
     wp_enqueue_script(
         'laura-floris-theme-js',
         get_template_directory_uri() . '/assets/theme.js',
         array(),
-        '4.2',
+        $script_version,
         true
     );
 
@@ -186,6 +191,25 @@ function laura_floris_get_shop_highlights() {
         ),
     );
 }
+
+function laura_floris_customize_checkout_login_message($message) {
+    return __('Returning customer? <a href="#" class="showlogin">Log in</a>', 'laura-floris');
+}
+add_filter('woocommerce_checkout_login_message', 'laura_floris_customize_checkout_login_message');
+
+function laura_floris_customize_checkout_coupon_message($message) {
+    return __('Have a coupon? <a href="#" class="showcoupon">Add coupon</a>', 'laura-floris');
+}
+add_filter('woocommerce_checkout_coupon_message', 'laura_floris_customize_checkout_coupon_message');
+
+function laura_floris_translate_shipping_method_label($label, $method) {
+    if (stripos($label, 'Tariffa unica') !== false) {
+        $label = str_ireplace('Tariffa unica', 'Flat rate', $label);
+    }
+
+    return $label;
+}
+add_filter('woocommerce_cart_shipping_method_full_label', 'laura_floris_translate_shipping_method_label', 10, 2);
 
 function laura_floris_get_cart_button_markup($classes = '') {
     if (!laura_floris_is_woocommerce_available()) {
@@ -492,6 +516,27 @@ function laura_floris_filter_wp_robots($robots) {
     return $robots;
 }
 add_filter('wp_robots', 'laura_floris_filter_wp_robots');
+
+function laura_floris_add_sitemap_to_robots_txt($output, $public) {
+    if ('0' === (string) $public) {
+        return $output;
+    }
+
+    $sitemap_url = esc_url_raw(home_url('/wp-sitemap.xml'));
+
+    if (!$sitemap_url || false !== stripos($output, $sitemap_url)) {
+        return $output;
+    }
+
+    $output = rtrim($output);
+
+    if ('' !== $output) {
+        $output .= "\n";
+    }
+
+    return $output . 'Sitemap: ' . $sitemap_url . "\n";
+}
+add_filter('robots_txt', 'laura_floris_add_sitemap_to_robots_txt', 10, 2);
 
 function laura_floris_get_virtual_sitemap_entries() {
     $lastmod = gmdate('c', max(array_filter(array(

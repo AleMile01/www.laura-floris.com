@@ -16,10 +16,10 @@ $artwork_groups = laura_floris_get_artwork_groups();
             <h1 class="text-4xl font-black md:text-5xl">Collections</h1>
         </div>
 
-        <div class="artwork-collections-grid grid grid-cols-1 items-start gap-4 md:grid-cols-3 md:gap-6">
+        <div class="artwork-collections-grid grid grid-cols-2 items-start gap-4 lg:grid-cols-3 md:gap-6">
             <?php foreach ($artwork_groups as $slug => $group) : ?>
-                <a href="<?php echo esc_url(laura_floris_get_artwork_group_url($slug)); ?>" class="artwork-collections-card group overflow-hidden rounded-3xl bg-neutral-100 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-                    <div class="artwork-collections-card__media aspect-[4/4.35] overflow-hidden md:aspect-[4/4.45]">
+                <a href="<?php echo esc_url(laura_floris_get_artwork_group_url($slug)); ?>" class="artwork-collections-card group flex h-full flex-col overflow-hidden rounded-[2rem] bg-neutral-100 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+                    <div class="artwork-collections-card__media aspect-[4/4.35] overflow-hidden bg-neutral-100 md:aspect-[4/4.45]">
                         <img
                             src="<?php echo esc_url($group['cover']); ?>"
                             alt="<?php echo esc_attr($group['title']); ?>"
@@ -27,7 +27,7 @@ $artwork_groups = laura_floris_get_artwork_groups();
                         >
                     </div>
 
-                    <div class="artwork-collections-card__content p-3 text-center md:p-4">
+                    <div class="artwork-collections-card__content flex grow flex-col p-3 text-center md:p-4">
                         <h2 class="text-xs font-semibold uppercase leading-tight md:text-lg"><?php echo esc_html($group['title']); ?></h2>
                         <span class="mt-2 inline-flex text-[10px] uppercase tracking-[0.18em] text-neutral-500 md:mt-3 md:text-xs md:tracking-[0.2em]">View collection</span>
                     </div>

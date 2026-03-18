@@ -49,12 +49,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!menuToggle || !mobileMenu || !mobileOverlay) return;
 
     menuToggle.setAttribute('aria-expanded', 'false');
-    mobileMenu.setAttribute('aria-hidden', 'true');
+    mobileMenu.setAttribute('inert', '');
     mobileMenu.classList.add('translate-x-full', 'pointer-events-none');
     mobileMenu.classList.remove('translate-x-0', 'pointer-events-auto');
     mobileOverlay.classList.add('pointer-events-none', 'opacity-0', 'bg-black/0');
     mobileOverlay.classList.remove('pointer-events-auto', 'opacity-100', 'bg-black/30');
-    if (!cartDrawer || cartDrawer.getAttribute('aria-hidden') === 'true') {
+    if (!cartDrawer || !cartDrawer.classList.contains('is-open')) {
       unlockBodyScroll();
     }
     menuToggle.classList.remove('is-open');
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!menuToggle || !mobileMenu || !mobileOverlay) return;
 
     menuToggle.setAttribute('aria-expanded', 'true');
-    mobileMenu.setAttribute('aria-hidden', 'false');
+    mobileMenu.removeAttribute('inert');
     mobileMenu.classList.remove('translate-x-full', 'pointer-events-none');
     mobileMenu.classList.add('translate-x-0', 'pointer-events-auto');
     mobileOverlay.classList.remove('pointer-events-none', 'opacity-0', 'bg-black/0');
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function closeCartDrawer() {
     if (!cartDrawer || !cartOverlay) return;
 
-    cartDrawer.setAttribute('aria-hidden', 'true');
+    cartDrawer.setAttribute('inert', '');
     cartOverlay.setAttribute('aria-hidden', 'true');
     cartDrawer.classList.remove('is-open');
     cartOverlay.classList.remove('is-open');
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
       button.setAttribute('aria-expanded', 'false');
     });
 
-    if (!mobileMenu || mobileMenu.getAttribute('aria-hidden') === 'true') {
+    if (!mobileMenu || mobileMenu.hasAttribute('inert')) {
       unlockBodyScroll();
     }
   }
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!cartDrawer || !cartOverlay) return;
 
     closeMobileMenu();
-    cartDrawer.setAttribute('aria-hidden', 'false');
+    cartDrawer.removeAttribute('inert');
     cartOverlay.setAttribute('aria-hidden', 'false');
     cartDrawer.classList.add('is-open');
     cartOverlay.classList.add('is-open');
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (cartDrawer && cartOverlay && cartToggleButtons.length) {
     cartToggleButtons.forEach(function (button) {
       button.addEventListener('click', function () {
-        const isOpen = cartDrawer.getAttribute('aria-hidden') === 'false';
+        const isOpen = cartDrawer.classList.contains('is-open');
 
         if (isOpen) {
           closeCartDrawer();
@@ -177,11 +177,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (shouldShow) {
       navbarLogo.classList.remove('opacity-0', 'pointer-events-none');
       navbarLogo.classList.add('opacity-100');
-      navbarLogo.setAttribute('aria-hidden', 'false');
     } else {
       navbarLogo.classList.add('opacity-0', 'pointer-events-none');
       navbarLogo.classList.remove('opacity-100');
-      navbarLogo.setAttribute('aria-hidden', 'true');
     }
   }
 

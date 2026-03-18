@@ -37,7 +37,7 @@ $show_header_logo = !$hide_header_logo;
 <header id="site-header" class="laura-site-header fixed inset-x-0 top-0 z-50 hidden transition-transform duration-300 md:block">
     <div class="laura-site-header__inner mx-auto max-w-7xl px-6 py-4 md:px-10">
         <?php if ($show_header_logo) : ?>
-            <a href="<?php echo esc_url(home_url('/')); ?>" id="navbar-logo" class="laura-site-header__brand pointer-events-none text-sm font-black uppercase tracking-[0.35em] opacity-0 transition-all duration-300 md:text-base" aria-hidden="true">
+            <a href="<?php echo esc_url(home_url('/')); ?>" id="navbar-logo" class="laura-site-header__brand pointer-events-none text-sm font-black uppercase tracking-[0.35em] opacity-0 transition-all duration-300 md:text-base">
                 <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/logo.webp'); ?>" class="h-9" alt="<?php bloginfo('name'); ?>">
             </a>
         <?php else : ?>
@@ -76,7 +76,7 @@ $show_header_logo = !$hide_header_logo;
 </button>
 
 <div id="mobile-menu-overlay" class="pointer-events-none fixed inset-0 z-[55] bg-black/0 opacity-0 transition duration-300 md:hidden"></div>
-<aside id="mobile-menu" class="pointer-events-none fixed right-0 top-0 z-[60] flex h-screen w-[min(22rem,88vw)] translate-x-full flex-col bg-white px-6 pb-8 pt-24 shadow-2xl transition-transform duration-300 md:hidden" aria-hidden="true">
+<aside id="mobile-menu" class="pointer-events-none fixed right-0 top-0 z-[60] flex h-screen w-[min(22rem,88vw)] translate-x-full flex-col bg-white px-6 pb-8 pt-24 shadow-2xl transition-transform duration-300 md:hidden" inert>
     <?php
     wp_nav_menu(array(
         'theme_location' => 'primary',
@@ -121,9 +121,9 @@ $show_header_logo = !$hide_header_logo;
 
 <?php if (laura_floris_is_woocommerce_available()) : ?>
     <div id="laura-cart-overlay" class="laura-cart-overlay" aria-hidden="true"></div>
-    <aside id="laura-cart-drawer" class="laura-cart-drawer" aria-hidden="true">
+    <aside id="laura-cart-drawer" class="laura-cart-drawer" role="dialog" aria-modal="true" aria-labelledby="laura-cart-drawer-title" inert>
         <div class="laura-cart-drawer__header">
-            <p class="laura-cart-drawer__eyebrow">Shop cart</p>
+            <p class="laura-cart-drawer__eyebrow" id="laura-cart-drawer-title">Shop cart</p>
             <button type="button" class="laura-cart-drawer__close" data-cart-close aria-label="Close cart">
                 <span aria-hidden="true">&times;</span>
             </button>
