@@ -1029,10 +1029,6 @@ function laura_floris_customize_woocommerce_toggle_text($translated_text, $text,
         return $translated_text;
     }
 
-    if ($text === 'Click here to login') {
-        return __('Accedi', 'laura-floris');
-    }
-
     if ($text === 'Click here to enter your code') {
         return __('Inserisci codice promozionale', 'laura-floris');
     }
